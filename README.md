@@ -1,157 +1,274 @@
 # Pancen Jateng — Sistem Pengaduan Rokok Ilegal
 
-Pancen Jateng adalah aplikasi Single Page Application (SPA) berbasis web untuk melaporkan peredaran dan penjualan rokok ilegal di wilayah Provinsi Jawa Tengah. Sistem ini mengintegrasikan data laporan masyarakat dengan pelacakan status, peta persebaran interaktif, serta notifikasi otomatis ke WhatsApp Grup Satpol PP melalui Fonnte API Gateway.
+SPA berbasis web untuk pelaporan peredaran rokok ilegal di Provinsi Jawa Tengah.
+Laporan masyarakat dilacak melalui nomor tiket, dipetakan secara interaktif, dan
+dinotifikasi otomatis ke WhatsApp Grup Satpol PP via Fonnte API Gateway.
 
 ---
 
-## 🚀 Fitur Utama
+## Fitur
 
-### 1. Portal Pelapor (Masyarakat)
-- **Formulir Laporan Multi-Step (Wizard)**:
-  - **Identitas Pelapor**: Nama pelapor, email (opsional), dan nomor WhatsApp.
-  - **Lokasi Kejadian**: Pilih kabupaten/kota, alamat lengkap, dan nama toko.
-  - **Detail Laporan**: Klasifikasi jenis rokok (SKM, SKT, Iris, Cerutu), merk rokok, foto bukti pelanggaran, dan deskripsi kejadian.
-- **Pelacakan Status**: Halaman khusus untuk melacak status penanganan laporan secara real-time menggunakan nomor tiket aduan dan nomor WhatsApp pelapor.
-
-### 2. Portal Admin (Satpol PP)
-- **Dashboard Overview**:
-  - KPI Stat Cards (Total Aduan, Hari Ini, Minggu Ini, Bulan Ini).
-  - Breakdown status laporan aduan (Baru, Diproses, Selesai, Ditolak).
-  - Daftar laporan terbaru dengan akses cepat ke detail.
-- **Manajemen Aduan**:
-  - Tabel log aduan dengan pencarian teks, pagination, serta filtrasi data berdasarkan status aduan dan jenis rokok.
-  - Detail aduan lengkap termasuk foto bukti, koordinat peta, serta riwayat notifikasi WhatsApp.
-  - Pembaruan status aduan (Baru → Diproses → Selesai / Ditolak) disertai penulisan catatan internal admin.
-  - Export laporan aduan berformat **CSV** dengan UTF-8 BOM.
-  - Fitur kirim ulang notifikasi WhatsApp jika terdapat kegagalan integrasi API.
-  - Hapus aduan (soft delete) dengan konfirmasi dialog.
+| Area | Fitur |
+| --- | --- |
+| **Portal Pelapor** | Form wizard 3-langkah (identitas → lokasi → detail), pelacakan status via tiket + WA |
+| **Dashboard Admin** | KPI cards, breakdown per status, daftar laporan terbaru |
+| **Manajemen Aduan** | Tabel dengan filter/pencarian/pagination, update status + catatan admin, export CSV, kirim ulang WA, soft delete |
 
 ---
 
-## 🌐 Navigasi & Alamat URL Halaman
+## Navigasi URL
 
-Aplikasi ini berjalan sebagai Single Page Application (SPA) dengan router terpusat pada React Router v7. Berikut adalah alamat URL untuk masing-masing halaman:
-
-| Halaman | URL | Keterangan |
-| --- | --- | --- |
-| **Landing Redirect** | `/` | Mengarahkan pelapor langsung ke halaman formulir laporan (`/lapor`). |
-| **Formulir Laporan** | `/lapor` | Halaman multi-step wizard untuk membuat pengaduan rokok ilegal baru. |
-| **Laporan Berhasil** | `/lapor/berhasil/:ticket` | Halaman konfirmasi setelah laporan berhasil dikirim (menampilkan nomor tiket). |
-| **Pelacakan Laporan** | `/lacak` | Halaman tracking status aduan menggunakan nomor tiket & nomor WhatsApp. |
-| **Login Admin** | `/auth/signin` | Halaman login otentikasi admin untuk masuk ke portal Satpol PP. |
-| **Dashboard Admin** | `/admin` | Ringkasan statistik, bagan status, dan daftar laporan terbaru. |
-| **Daftar Laporan Admin** | `/admin/aduan` | Kelola seluruh daftar aduan masuk, pencarian filter, dan export CSV. |
-| **Detail Laporan Admin** | `/admin/aduan/:id` | Halaman penanganan detail aduan, pembaruan status, catatan admin, & kirim ulang WA. |
+| Halaman | URL |
+| --- | --- |
+| Landing (redirect ke /lapor) | `/` |
+| Formulir Laporan | `/lapor` |
+| Konfirmasi Berhasil | `/lapor/berhasil/:ticket` |
+| Pelacakan | `/lacak` |
+| Login Admin | `/auth/signin` |
+| Dashboard Admin | `/admin` |
+| Daftar Aduan | `/admin/aduan` |
+| Detail Aduan | `/admin/aduan/:id` |
 
 ---
 
-## 🔑 Kredensial Akses Masuk Admin (Default)
+## Tech Stack
 
-Untuk masuk ke Dashboard Admin, gunakan kredensial bawaan berikut setelah database berhasil di-seed:
-
-- **Alamat URL**: `http://localhost:8000/auth/signin`
-- **Email**: `andoru.ray@gmail.com`
-- **Password**: `+Codina14`
-
-> [!WARNING]
-> Sangat disarankan untuk segera mengubah email dan password bawaan ini saat pertama kali dideploy di server production demi alasan keamanan.
-
----
-
-## 🛠️ Tech Stack & Arsitektur
-
-- **Backend**:
-  - Framework: Laravel 12 (PHP 8.2+)
-  - Autentikasi: Laravel Sanctum (Token-Based API Guard)
-  - Notifikasi Gateway: Fonnte WhatsApp API Gateway
-  - Database: SQLite (default untuk local dev / testing) atau PostgreSQL/MySQL
-- **Frontend**:
-  - Library: React 19 (Functional Components + Hooks)
-  - State Management: React Context + TanStack Query
-  - Routing: React Router v7
-  - Bundler: Vite 7 + laravel-vite-plugin
-  - Styles: Tailwind CSS v4, Metronic demo1 Design System
-  - UI Components: Radix UI primitives (88 components), shadcn-style
-  - Forms: react-hook-form + zod validation
-  - Icons: Lucide React, Remix Icon
-  - Notifications: Sonner (toast)
-  - Theme: next-themes (dark/light mode)
-  - i18n: react-intl (id/en)
-  - Charts: ApexCharts, Recharts
-  - Maps: Leaflet + React Leaflet
+| Layer | Teknologi |
+| --- | --- |
+| **Backend** | Laravel 12, PHP 8.2+, Sanctum (token auth), Fonnte WA Gateway |
+| **Frontend** | React 19, TanStack Query, React Router v7, react-hook-form + zod |
+| **Bundler / CSS** | Vite 7, Tailwind CSS v4, Metronic demo1 Design System |
+| **UI** | Radix UI + shadcn-vue, Lucide React, Sonner (toast) |
+| **i18n** | react-intl (id / en) |
+| **Database** | SQLite (dev), MySQL / PostgreSQL (production) |
 
 ---
 
-## ⚙️ Persyaratan Sistem
-- PHP >= 8.2 (dengan ekstensi pdo_sqlite, gd, curl, zip)
-- Composer >= 2.0
-- Node.js >= 20.x & npm
-- Akun Fonnte API (untuk notifikasi WhatsApp)
+## Persyaratan
+
+- PHP ≥ 8.2 (ekstensi: `pdo_mysql`, `gd`, `curl`, `zip`, `fileinfo`)
+- Composer ≥ 2.0
+- Node.js ≥ 20 LTS & npm
+- Akun [Fonnte](https://fonnte.com) (untuk notifikasi WhatsApp)
 
 ---
 
-## 💻 Instalasi Lokal
+## Instalasi
 
-1. **Clone repositori**:
-   ```bash
-   git clone https://github.com/pancenjateng/pancenjateng.git
-   cd pancenjateng
-   ```
+### A. Lokal (Development)
 
-2. **Instal dependensi Backend (PHP/Laravel)**:
-   ```bash
-   composer install
-   ```
-
-3. **Instal dependensi Frontend (JS/Node)**:
-   ```bash
-   npm install
-   ```
-
-4. **Konfigurasi Environment**:
-   Salin file `.env.example` menjadi `.env` lalu sesuaikan isinya:
-   ```bash
-   copy .env.example .env
-   ```
-   *Tambahkan kredensial pihak ketiga berikut pada file `.env`:*
-   ```env
-   # WhatsApp Fonnte Gateway API
-   FONNTE_TOKEN=your_fonnte_api_token
-   FONNTE_TARGET=your_satpol_pp_group_or_number
-   ```
-
-5. **Jalankan Migrasi & Database Seeder**:
-   Inisialisasi database lokal dan buat akun admin bawaan (`andoru.ray@gmail.com` / `+Codina14`):
-   ```bash
-   php artisan migrate --seed
-   ```
-
-6. **Build Asset Frontend**:
-   Kompilasi asset React dan Tailwind CSS untuk production:
-   ```bash
-   npm run build
-   ```
-
-7. **Jalankan Aplikasi**:
-   Mulai server Laravel lokal:
-   ```bash
-   php artisan serve
-   ```
-   Secara default, aplikasi akan berjalan pada alamat [http://localhost:8000](http://localhost:8000).
-
----
-
-## 🧪 Pengujian (Testing)
-
-### Menjalankan Unit & Feature Tests
-Aplikasi dilengkapi dengan rangkaian automated test lengkap yang meliputi pengujian validasi aduan, tracking status, autentikasi admin, update status, dan integrasi pengiriman WhatsApp:
 ```bash
-php artisan test
+git clone https://github.com/pancenjateng/pancenjateng.git
+cd pancenjateng
+
+# Backend
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate --seed
+
+# Frontend
+npm install
+npm run build
+
+# Jalankan
+php artisan serve
 ```
 
-### Type Checking & Lint Frontend
-Untuk memeriksa validitas kode TypeScript dan React secara statis:
+Buka [http://localhost:8000](http://localhost:8000). Akun admin dibuat oleh
+seeder sesuai nilai `ADMIN_EMAIL` / `ADMIN_PASSWORD` di `.env` (default:
+`admin@pancenjateng.id` / `password`).
+
+---
+
+### B. Plesk
+
+#### 1. Upload & Atur Document Root
+
+Upload seluruh isi repositori ke `httpdocs/` (atau subdomain folder) melalui
+**File Manager** Plesk atau FTP/SFTP.
+
+Setelah upload, **ubah Document Root** domain/subdomain ke:
+
+```
+httpdocs/public
+```
+
+Caranya: **Plesk → Websites & Domains → Hosting Settings → Document root**,
+lalu akhiri dengan `/public`.
+
+#### 2. Atur PHP & Ekstensi
+
+Buka **Plesk → PHP Settings** untuk domain, lalu:
+- Pilih versi **PHP 8.2** atau **8.3**
+- Aktifkan ekstensi: `pdo_mysql`, `gd`, `curl`, `zip`, `fileinfo`, `openssl`
+
+#### 3. Siapkan Database
+
+Buka **Plesk → Databases** dan buat database MySQL. Catat **host**, **nama
+database**, **user**, dan **password**.
+
+#### 4. Konfigurasi `.env`
+
+Buka `.env` di root project (via File Manager atau SSH) dan sesuaikan:
+
+```env
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://domain-anda.com
+
+DB_CONNECTION=mysql
+DB_HOST=localhost
+DB_PORT=3306
+DB_DATABASE=nama_database
+DB_USERNAME=user_database
+DB_PASSWORD=password_database
+
+WA_GATEWAY_URL=https://api.fonnte.com/send
+WA_GATEWAY_TOKEN=token_fonnte_anda
+WA_TARGET_NUMBER=08xxxxxxxxxx
+
+ADMIN_EMAIL=admin@domain-anda.com
+ADMIN_PASSWORD=password_aman
+```
+
+#### 5. Jalankan Composer & Migrasi (via SSH)
+
+Buka **Plesk → SSH Terminal** (atau SSH client) dan jalankan:
+
 ```bash
-npx tsc --noEmit
-npx eslint resources/js/
+cd /var/www/vhosts/domain-anda/httpdocs
+composer install --optimize-autoloader --no-dev
+php artisan key:generate
+php artisan migrate --seed
+php artisan storage:link
+```
+
+#### 6. Build Frontend (dua opsi)
+
+**Opsi A — Build di server** (Node.js harus tersedia):
+
+```bash
+npm install
+npm run build
+```
+
+**Opsi B — Build lokal lalu upload** (jika server tidak punya Node.js):
+
+Jalankan `npm install && npm run build` di komputer lokal, lalu upload folder
+`public/build/` ke server.
+
+#### 7. Selesai
+
+Buka `https://domain-anda.com` dan login admin dengan email/password dari `.env`.
+
+---
+
+### C. cPanel
+
+#### 1. Upload File
+
+Upload seluruh isi repositori ke `public_html/` (atau subdomain folder) via
+**File Manager** cPanel atau FTP.
+
+#### 2. Atur Document Root
+
+Jika menggunakan domain utama, arahkan document root ke `public_html/public`.
+Untuk **addon domain** atau **subdomain**, atur document root melalui:
+
+```
+cPanel → Domains → Addon Domains (atau Subdomains)
+```
+
+Pastikan path mengarah ke `<root_project>/public`.
+
+#### 3. Atur PHP
+
+Buka **cPanel → Select PHP Version**:
+- Pilih **PHP 8.2** atau **8.3**
+- Centang ekstensi: `pdo_mysql`, `gd`, `curl`, `zip`, `fileinfo`, `openssl`
+- Set `memory_limit` minimal 256M
+
+#### 4. Buat Database
+
+Buka **cPanel → MySQL Databases**:
+1. Buat database (catat nama)
+2. Buat user + password (catat)
+3. **Add user to database** lalu centang **ALL PRIVILEGES**
+
+#### 5. Konfigurasi `.env`
+
+Salin `.env.example` ke `.env` dan isi:
+
+```env
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://domain-anda.com
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=cpanelUser_namaDatabase
+DB_USERNAME=cpanelUser_namaUser
+DB_PASSWORD=password_database
+
+WA_GATEWAY_URL=https://api.fonnte.com/send
+WA_GATEWAY_TOKEN=token_fonnte_anda
+WA_TARGET_NUMBER=08xxxxxxxxxx
+
+ADMIN_EMAIL=admin@domain-anda.com
+ADMIN_PASSWORD=password_aman
+```
+
+> cPanel otomatis menambahkan prefix username ke nama database dan user.
+> Gunakan nama lengkap seperti di atas.
+
+#### 6. Jalankan Setup (via Terminal cPanel)
+
+Buka **cPanel → Terminal** dan jalankan:
+
+```bash
+cd ~/public_html
+composer install --optimize-autoloader --no-dev
+php artisan key:generate
+php artisan migrate --seed
+php artisan storage:link
+```
+
+#### 7. Build Frontend
+
+Jika server tidak memiliki Node.js, build di lokal lalu upload folder
+`public/build/`. Jika ada Node.js (≥ 20), jalankan `npm install && npm run build`
+di root project via Terminal.
+
+#### 8. Selesai
+
+Buka domain di browser. Login admin dengan kredensial dari `ADMIN_EMAIL` /
+`ADMIN_PASSWORD` di `.env`.
+
+---
+
+## Variabel Environment
+
+| Key | Wajib | Keterangan |
+| --- |:---:| --- |
+| `APP_URL` | ✅ | URL lengkap domain (https://...) |
+| `DB_CONNECTION` | ✅ | `sqlite` (dev) atau `mysql` (production) |
+| `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD` | ✅ | Kredensial database |
+| `WA_GATEWAY_URL` | ✅ | Endpoint Fonnte (`https://api.fonnte.com/send`) |
+| `WA_GATEWAY_TOKEN` | ✅ | Token API Fonnte |
+| `WA_TARGET_NUMBER` | ✅ | Nomor WhatsApp tujuan notifikasi |
+| `ADMIN_EMAIL` | — | Email admin (default: `admin@pancenjateng.id`) |
+| `ADMIN_PASSWORD` | — | Password admin (default: `password`) |
+
+---
+
+## Testing
+
+```bash
+php artisan test                    # Unit & Feature tests
+npx tsc --noEmit                    # TypeScript type check
+npx eslint resources/js/            # Frontend lint
+vendor/bin/pint --test              # PHP code style
+composer audit                      # Dependency vulnerabilities
 ```
