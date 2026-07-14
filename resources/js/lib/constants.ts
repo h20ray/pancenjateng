@@ -1,21 +1,6 @@
-export const statusLabel: Record<string, string> = {
-    baru: 'Baru',
-    diproses: 'Sedang Diproses',
-    selesai: 'Selesai',
-    ditolak: 'Ditolak',
-};
-
-export const statusVariant: Record<string, 'default' | 'secondary' | 'destructive'> = {
-    baru: 'default',
-    diproses: 'secondary',
-    selesai: 'default',
+export const statusVariant: Record<string, 'success' | 'warning' | 'info' | 'destructive'> = {
+    baru: 'info',
+    diproses: 'warning',
+    selesai: 'success',
     ditolak: 'destructive',
-};
-
-export const jenisLabel: Record<string, string> = {
-    sigaret_mesin: 'Sigaret Mesin (SKM/SPM)',
-    sigaret_tangan: 'Sigaret Tangan (SKT)',
-    tembakau_iris: 'Tembakau Iris',
-    cerutu: 'Cerutu',
-    lainnya: 'Lainnya',
 };

@@ -7,7 +7,8 @@ import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { loadGoogleMaps } from '@/services/googleMapsLoader';
-import { statusLabel, statusVariant } from '@/lib/constants';
+import { statusVariant } from '@/lib/constants';
+import { useI18n } from 'vue-i18n';
 import api from '@/services/api';
 import { useRouter } from 'vue-router';
 
@@ -15,6 +16,7 @@ const router = useRouter();
 const stats = ref<any>(null);
 const loading = ref(true);
 const error = ref('');
+const { t } = useI18n();
 const mapDiv = ref<HTMLDivElement>();
 let mapInstance: google.maps.Map | null = null;
 const markers: google.maps.Marker[] = [];
@@ -54,9 +56,9 @@ onMounted(async () => {
                         content: `
                             <div class="p-2 font-sans text-xs">
                                 <strong>${aduan.ticket_number}</strong><br/>
-                                Toko: ${aduan.nama_toko}<br/>
-                                Status: ${statusLabel[aduan.status] || aduan.status}<br/>
-                                <a href="/admin/aduan/${aduan.id}" style="color: blue; text-decoration: underline;">Lihat Detail</a>
+                                ${t('dashboard.map_shop')}: ${aduan.nama_toko}<br/>
+                                ${t('dashboard.map_status')}: ${t('label.status_' + aduan.status)}<br/>
+                                <a href="/admin/aduan/${aduan.id}" style="color: blue; text-decoration: underline;">${t('button.view_detail')}</a>
                             </div>
                         `,
                     });
@@ -68,7 +70,7 @@ onMounted(async () => {
             });
         }
     } catch (e) {
-        error.value = 'Gagal memuat data dashboard.';
+        error.value = t('message.load_dashboard_failed');
         console.error(e);
     } finally {
         loading.value = false;
@@ -86,36 +88,35 @@ onUnmounted(() => {
 
 <template>
     <AdminLayout>
-        <div v-if="loading" class="text-center py-10 text-muted-foreground">Memuat data dashboard...</div>
+        <div v-if="loading" class="text-center py-10 text-muted-foreground">{{ $t('message.loading_dashboard') }}</div>
         <div v-else-if="error" class="text-center py-10 text-destructive">{{ error }}</div>
-        <div v-else class="space-y-6">
-            <h2 class="text-3xl font-bold tracking-tight">Dashboard Overview</h2>
+        <div v-else class="space-y-5">
 
             <!-- KPI Cards -->
             <StatsCards :stats="stats" />
 
             <!-- Row 2: Status Breakdown and Map -->
-            <div class="grid gap-4 md:grid-cols-3">
-                <Card class="border md:col-span-1 shadow-sm">
-                    <CardHeader>
-                        <CardTitle class="text-lg">Status Laporan</CardTitle>
-                        <CardDescription>Komposisi status penanganan aduan</CardDescription>
+            <div class="grid gap-5 md:grid-cols-3">
+                <Card class="border md:col-span-1 shadow-xs gap-0">
+                    <CardHeader class="border-b px-5 min-h-14 flex flex-col justify-center gap-1">
+                        <CardTitle class="text-base font-semibold leading-none tracking-tight">{{ $t('dashboard.status_title') }}</CardTitle>
+                        <CardDescription>{{ $t('dashboard.status_subtitle') }}</CardDescription>
                     </CardHeader>
-                    <CardContent class="space-y-4 pt-2">
+                    <CardContent class="space-y-4 p-5">
                         <div v-for="(val, status) in stats.per_status" :key="status" class="space-y-1">
                             <div class="flex justify-between text-sm">
-                                <span class="capitalize font-medium">{{ statusLabel[status] || status }}</span>
-                                <span class="text-muted-foreground">{{ val }} Laporan</span>
+                                <span class="capitalize font-medium">{{ $t('label.status_' + status) }}</span>
+                                <span class="text-muted-foreground">{{ val }} {{ $t('dashboard.reports_count') }}</span>
                             </div>
                             <!-- Simple custom progress bar -->
                             <div class="w-full h-2 bg-muted rounded-full overflow-hidden">
                                 <div 
                                     class="h-full rounded-full" 
                                     :class="{
-                                        'bg-blue-600': String(status) === 'baru',
-                                        'bg-amber-600': String(status) === 'diproses',
-                                        'bg-green-600': String(status) === 'selesai',
-                                        'bg-red-600': String(status) === 'ditolak',
+                                        'bg-primary': String(status) === 'baru',
+                                        'bg-amber-500': String(status) === 'diproses',
+                                        'bg-green-500': String(status) === 'selesai',
+                                        'bg-destructive': String(status) === 'ditolak',
                                     }"
                                     :style="{ width: `${stats.total > 0 ? (val / stats.total) * 100 : 0}%` }"
                                 ></div>
@@ -124,53 +125,53 @@ onUnmounted(() => {
                     </CardContent>
                 </Card>
 
-                <Card class="border md:col-span-2 shadow-sm">
-                    <CardHeader>
-                        <CardTitle class="text-lg">Peta Persebaran</CardTitle>
-                        <CardDescription>Lokasi peredaran rokok ilegal yang dilaporkan</CardDescription>
+                <Card class="border md:col-span-2 shadow-xs gap-0">
+                    <CardHeader class="border-b px-5 min-h-14 flex flex-col justify-center gap-1">
+                        <CardTitle class="text-base font-semibold leading-none tracking-tight">{{ $t('dashboard.map_title') }}</CardTitle>
+                        <CardDescription>{{ $t('dashboard.map_subtitle') }}</CardDescription>
                     </CardHeader>
-                    <CardContent class="pt-0">
-                        <div ref="mapDiv" class="w-full h-[280px] rounded-md border" />
+                    <CardContent class="p-5">
+                        <div ref="mapDiv" class="w-full h-[300px] rounded-md border" />
                     </CardContent>
                 </Card>
             </div>
 
             <!-- Row 3: Recent List -->
-            <Card class="border shadow-sm">
-                <CardHeader>
-                    <CardTitle class="text-lg">10 Laporan Terbaru</CardTitle>
-                    <CardDescription>Aduan yang baru saja masuk ke sistem</CardDescription>
+            <Card class="border shadow-xs gap-0">
+                <CardHeader class="border-b px-5 min-h-14 flex flex-col justify-center gap-1">
+                    <CardTitle class="text-base font-semibold leading-none tracking-tight">{{ $t('dashboard.recent_title') }}</CardTitle>
+                    <CardDescription>{{ $t('dashboard.recent_subtitle') }}</CardDescription>
                 </CardHeader>
-                <CardContent>
-                    <Table class="border-t">
+                <CardContent class="p-0">
+                    <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>No Tiket</TableHead>
-                                <TableHead>Pelapor</TableHead>
-                                <TableHead>Kab/Kota</TableHead>
-                                <TableHead>Jenis Rokok</TableHead>
-                                <TableHead>Status</TableHead>
-                                <TableHead>Tanggal</TableHead>
-                                <TableHead class="text-right">Aksi</TableHead>
+                                <TableHead class="px-5 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">{{ $t('label.ticket_no') }}</TableHead>
+                                <TableHead class="px-5 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">{{ $t('label.reporter') }}</TableHead>
+                                <TableHead class="px-5 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">{{ $t('label.city') }}</TableHead>
+                                <TableHead class="px-5 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">{{ $t('label.cigarette_type') }}</TableHead>
+                                <TableHead class="px-5 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">{{ $t('label.status') }}</TableHead>
+                                <TableHead class="px-5 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">{{ $t('label.date') }}</TableHead>
+                                <TableHead class="px-5 py-3.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground text-right">{{ $t('label.action') }}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            <TableRow v-for="aduan in stats.terbaru" :key="aduan.id" class="cursor-pointer hover:bg-muted/50" @click="router.push(`/admin/aduan/${aduan.id}`)">
-                                <TableCell class="font-mono font-medium">{{ aduan.ticket_number }}</TableCell>
-                                <TableCell>{{ aduan.nama_pelapor }}</TableCell>
-                                <TableCell>{{ aduan.kabupaten_kota }}</TableCell>
-                                <TableCell class="capitalize">{{ aduan.jenis_rokok.replace('_', ' ') }}</TableCell>
-                                <TableCell>
-                                    <Badge :variant="statusVariant[aduan.status]">{{ statusLabel[aduan.status] || aduan.status }}</Badge>
+                            <TableRow v-for="aduan in stats.terbaru" :key="aduan.id" class="cursor-pointer hover:bg-muted/30" @click="router.push(`/admin/aduan/${aduan.id}`)">
+                                <TableCell class="px-5 py-3.5 font-mono font-medium">{{ aduan.ticket_number }}</TableCell>
+                                <TableCell class="px-5 py-3.5">{{ aduan.nama_pelapor }}</TableCell>
+                                <TableCell class="px-5 py-3.5">{{ aduan.kabupaten_kota }}</TableCell>
+                                <TableCell class="px-5 py-3.5 capitalize">{{ $t('label.jenis_' + aduan.jenis_rokok) }}</TableCell>
+                                <TableCell class="px-5 py-3.5">
+                                    <Badge :variant="statusVariant[aduan.status]">{{ $t('label.status_' + aduan.status) }}</Badge>
                                 </TableCell>
-                                <TableCell>{{ new Date(aduan.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) }}</TableCell>
-                                <TableCell class="text-right">
-                                    <Button variant="ghost" size="sm" type="button" @click.stop="router.push(`/admin/aduan/${aduan.id}`)">Detail →</Button>
+                                <TableCell class="px-5 py-3.5">{{ new Date(aduan.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) }}</TableCell>
+                                <TableCell class="px-5 py-3.5 text-right">
+                                    <Button variant="ghost" size="sm" type="button" @click.stop="router.push(`/admin/aduan/${aduan.id}`)">{{ $t('button.detail') }} →</Button>
                                 </TableCell>
                             </TableRow>
                             <template v-if="!stats.terbaru || stats.terbaru.length === 0">
                                 <TableRow>
-                                    <TableCell colspan="7" class="text-center py-6 text-muted-foreground">Tidak ada data aduan.</TableCell>
+                                    <TableCell colspan="7" class="text-center py-6 text-muted-foreground">{{ $t('message.no_aduan') }}</TableCell>
                                 </TableRow>
                             </template>
                         </TableBody>

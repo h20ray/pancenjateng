@@ -1,8 +1,17 @@
 <script setup lang="ts">
 import { useWizardStore } from '@/stores/wizardStore';
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const wizard = useWizardStore();
-const steps = ['Identitas', 'Lokasi', 'Detail', 'Konfirmasi'];
+const { t } = useI18n();
+
+const steps = computed(() => [
+    t('wizard.step_identitas'),
+    t('wizard.step_lokasi'),
+    t('wizard.step_detail'),
+    t('wizard.step_konfirmasi'),
+]);
 </script>
 
 <template>

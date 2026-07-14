@@ -1,0 +1,23 @@
+{
+    "toggle_theme": "Ubah tema",
+    "view_detail": "Lihat Detail",
+    "detail": "Detail",
+    "export_csv": "Export CSV",
+    "previous": "Sebelumnya",
+    "next": "Berikutnya",
+    "delete_report": "Hapus Laporan",
+    "saving": "Menyimpan...",
+    "save_changes": "Simpan Perubahan",
+    "sending": "Mengirim...",
+    "resend_wa": "Kirim Ulang WA",
+    "back": "Kembali",
+    "next_location": "Lanjut ke Lokasi",
+    "next_detail": "Lanjut ke Detail",
+    "review_report": "Review Laporan",
+    "submit_report": "Kirim Laporan",
+    "create_new_report": "Buat Laporan Baru",
+    "track_report": "Lacak Laporan",
+    "track": "Lacak",
+    "use_my_location": "Lokasi Saya",
+    "searching": "Mencari..."
+}

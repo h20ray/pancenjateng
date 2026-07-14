@@ -1,0 +1,16 @@
+{
+    "event_info": "Informasi Kejadian",
+    "evidence_photo": "Foto Bukti",
+    "evidence_photo_alt": "Foto Bukti Rokok Ilegal",
+    "map_location": "Lokasi Peta",
+    "action_follow_up": "Tindak Lanjut",
+    "action_follow_up_desc": "Perbarui status dan catatan internal",
+    "change_status": "Ubah Status",
+    "internal_note": "Catatan Internal",
+    "internal_note_placeholder": "Catatan penyelidikan / penanganan...",
+    "reporter_profile": "Profil Pelapor",
+    "reporter_profile_desc": "Hanya dapat dilihat oleh admin",
+    "wa_status_title": "Status Notifikasi WA",
+    "wa_status_desc": "Pengiriman ringkasan aduan ke grup admin",
+    "wa_status": "Status WA"
+}

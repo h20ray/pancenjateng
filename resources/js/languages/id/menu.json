@@ -1,0 +1,18 @@
+{
+    "dashboard": "Dashboard",
+    "aduan_list": "Daftar Aduan",
+    "overview_dashboard": "Overview Dashboard",
+    "overview_dashboard_desc": "Tinjauan performa sistem dan laporan",
+    "aduan_list_title": "Daftar Laporan Aduan",
+    "aduan_list_desc": "Kelola dan lacak aduan yang dikirimkan oleh pengguna",
+    "aduan_detail_title": "Detail Laporan Aduan",
+    "aduan_detail_desc": "Tampilan detail dari kiriman laporan aduan",
+    "admin_panel": "Admin Panel",
+    "admin": "Admin",
+    "detail": "Detail",
+    "admin_section": "Menu Admin",
+    "dashboard_section": "Menu Dashboard",
+    "footer_guide": "Panduan",
+    "footer_help": "Bantuan",
+    "footer_privacy": "Kebijakan Privasi"
+}

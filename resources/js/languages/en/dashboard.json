@@ -1,0 +1,19 @@
+{
+    "status_title": "Report Status",
+    "status_subtitle": "Complaint handling status composition",
+    "reports_count": "Reports",
+    "map_title": "Distribution Map",
+    "map_subtitle": "Reported illegal cigarette distribution locations",
+    "recent_title": "10 Recent Reports",
+    "recent_subtitle": "Complaints that recently entered the system",
+    "stats_total": "Total Reports",
+    "stats_total_desc": "All registered reports",
+    "stats_today": "Today",
+    "stats_today_desc": "Reports entered today",
+    "stats_week": "This Week",
+    "stats_week_desc": "Reports entered this week",
+    "stats_month": "This Month",
+    "stats_month_desc": "Reports entered this month",
+    "map_shop": "Shop",
+    "map_status": "Status"
+}

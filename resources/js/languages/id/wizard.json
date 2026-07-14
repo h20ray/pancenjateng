@@ -1,0 +1,22 @@
+{
+    "step1_title": "Identitas Pelapor",
+    "step1_subtitle": "Data Anda dirahasiakan dan hanya digunakan untuk verifikasi laporan.",
+    "step2_title": "Lokasi Kejadian",
+    "choose_location_map": "Pilih Lokasi di Peta",
+    "search_address_placeholder": "Cari alamat...",
+    "step3_title": "Detail Aduan",
+    "step4_title": "Konfirmasi Laporan",
+    "step4_subtitle": "Periksa kembali data Anda sebelum dikirim.",
+    "declaration": "Saya menyatakan bahwa laporan ini benar dan dapat dipertanggungjawabkan.",
+    "title": "Lapor Rokok Ilegal",
+    "subtitle": "Laporkan peredaran rokok ilegal di wilayah Anda",
+    "step_identitas": "Identitas",
+    "step_lokasi": "Lokasi",
+    "step_detail": "Detail",
+    "step_konfirmasi": "Konfirmasi",
+    "success_title": "Laporan Terkirim!",
+    "success_subtitle": "Laporan Anda telah diterima dan akan segera ditindaklanjuti.",
+    "your_ticket_number": "Nomor Tiket Anda",
+    "save_ticket_instruction": "Simpan nomor tiket untuk melacak status laporan Anda.",
+    "wa_greeting": "Halo Satpol PP Jawa Tengah, saya ingin melaporkan temuan rokok ilegal:"
+}

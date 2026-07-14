@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch, computed } from 'vue';
 import AdminLayout from '@/components/admin/AdminLayout.vue';
 import AduanTable from '@/components/admin/AduanTable.vue';
 import { Card, CardContent } from '@/components/ui/card';
@@ -8,11 +8,13 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import api from '@/services/api';
 import { toast } from 'vue-sonner';
+import { useI18n } from 'vue-i18n';
 
 const aduans = ref<any[]>([]);
 const pagination = ref<any>({});
 const loading = ref(true);
 const error = ref('');
+const { t } = useI18n();
 
 // Filters
 const search = ref('');
@@ -23,22 +25,22 @@ const page = ref(1);
 
 const cities = ref<{ kode: string; nama: string }[]>([]);
 
-const jenisRokokOptions = [
-    { value: 'all', label: 'Semua Jenis' },
-    { value: 'sigaret_mesin', label: 'Sigaret Mesin' },
-    { value: 'sigaret_tangan', label: 'Sigaret Tangan' },
-    { value: 'tembakau_iris', label: 'Tembakau Iris' },
-    { value: 'cerutu', label: 'Cerutu' },
-    { value: 'lainnya', label: 'Lainnya' },
-];
+const jenisRokokOptions = computed(() => [
+    { value: 'all', label: t('label.all_types') },
+    { value: 'sigaret_mesin', label: t('label.jenis_sigaret_mesin') },
+    { value: 'sigaret_tangan', label: t('label.jenis_sigaret_tangan') },
+    { value: 'tembakau_iris', label: t('label.jenis_tembakau_iris') },
+    { value: 'cerutu', label: t('label.jenis_cerutu') },
+    { value: 'lainnya', label: t('label.jenis_lainnya') },
+]);
 
-const statusOptions = [
-    { value: 'all', label: 'Semua Status' },
-    { value: 'baru', label: 'Baru' },
-    { value: 'diproses', label: 'Sedang Diproses' },
-    { value: 'selesai', label: 'Selesai' },
-    { value: 'ditolak', label: 'Ditolak' },
-];
+const statusOptions = computed(() => [
+    { value: 'all', label: t('label.all_statuses') },
+    { value: 'baru', label: t('label.status_baru') },
+    { value: 'diproses', label: t('label.status_diproses') },
+    { value: 'selesai', label: t('label.status_selesai') },
+    { value: 'ditolak', label: t('label.status_ditolak') },
+]);
 
 async function loadData() {
     loading.value = true;
@@ -62,7 +64,7 @@ async function loadData() {
             total: data.total,
         };
     } catch {
-        error.value = 'Gagal memuat data aduan.';
+        error.value = t('message.load_aduan_failed');
     } finally {
         loading.value = false;
     }
@@ -103,7 +105,7 @@ async function exportData() {
         link.click();
         window.URL.revokeObjectURL(link.href);
     } catch (e) {
-        toast.error('Gagal mengekspor data CSV.');
+        toast.error(t('message.export_csv_failed'));
         console.error('Export failed', e);
     }
 }
@@ -111,31 +113,29 @@ async function exportData() {
 
 <template>
     <AdminLayout>
+        <template #actions>
+            <Button type="button" @click="exportData" variant="outline" size="sm" class="flex items-center gap-1.5 font-semibold text-xs rounded-lg">
+                <i class="ki-outline ki-file-down text-base"></i>
+                {{ $t('button.export_csv') }}
+            </Button>
+        </template>
+
         <div class="space-y-6">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div>
-                    <h2 class="text-3xl font-bold tracking-tight">Daftar Aduan</h2>
-                    <p class="text-muted-foreground">Kelola dan tindaklanjuti laporan masyarakat</p>
-                </div>
-                <Button type="button" @click="exportData">
-                    📥 Export CSV
-                </Button>
-            </div>
 
             <!-- Filters Bar -->
             <Card class="border shadow-sm">
                 <CardContent class="p-4 grid gap-4 sm:grid-cols-4">
                     <div class="space-y-1">
-                        <label class="text-xs font-semibold">Pencarian</label>
+                        <label class="text-xs font-semibold">{{ $t('label.search') }}</label>
                         <Input 
                             v-model="search" 
-                            placeholder="Cari tiket, pelapor..." 
+                            :placeholder="$t('label.search_placeholder_aduan')" 
                             @keydown.enter="loadData"
                         />
                     </div>
                     
                     <div class="space-y-1">
-                        <label class="text-xs font-semibold">Status</label>
+                        <label class="text-xs font-semibold">{{ $t('label.status') }}</label>
                         <Select v-model="status">
                             <SelectTrigger>
                                 <SelectValue />
@@ -149,13 +149,13 @@ async function exportData() {
                     </div>
 
                     <div class="space-y-1">
-                        <label class="text-xs font-semibold">Kabupaten/Kota</label>
+                        <label class="text-xs font-semibold">{{ $t('label.city') }}</label>
                         <Select v-model="kabupaten">
                             <SelectTrigger>
-                                <SelectValue placeholder="Semua Kabupaten/Kota" />
+                                <SelectValue :placeholder="$t('label.all_cities')" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="all">Semua Kabupaten/Kota</SelectItem>
+                                <SelectItem value="all">{{ $t('label.all_cities') }}</SelectItem>
                                 <SelectItem v-for="city in cities" :key="city.kode" :value="city.nama">
                                     {{ city.nama }}
                                 </SelectItem>
@@ -164,7 +164,7 @@ async function exportData() {
                     </div>
 
                     <div class="space-y-1">
-                        <label class="text-xs font-semibold">Jenis Rokok</label>
+                        <label class="text-xs font-semibold">{{ $t('label.cigarette_type') }}</label>
                         <Select v-model="jenisRokok">
                             <SelectTrigger>
                                 <SelectValue />
@@ -180,14 +180,14 @@ async function exportData() {
             </Card>
 
             <!-- Table Card -->
-            <div v-if="loading" class="text-center py-10 text-muted-foreground">Memuat data aduan...</div>
+            <div v-if="loading" class="text-center py-10 text-muted-foreground">{{ $t('message.loading_aduan') }}</div>
             <div v-else-if="error" class="text-center py-10 text-destructive">{{ error }}</div>
             <div v-else class="space-y-4">
                 <AduanTable :aduans="aduans" />
 
                 <!-- Pagination -->
                 <div class="flex justify-between items-center text-sm text-muted-foreground pt-2">
-                    <div>Total: {{ pagination.total }} Laporan</div>
+                    <div>Total: {{ pagination.total }} {{ $t('label.reports') }}</div>
                     <div class="flex gap-2">
                         <Button 
                             variant="outline" 
@@ -195,7 +195,7 @@ async function exportData() {
                             :disabled="page === 1" 
                             @click="page--; loadData();"
                         >
-                            Sebelumnya
+                            {{ $t('button.previous') }}
                         </Button>
                         <Button 
                             variant="outline" 
@@ -203,7 +203,7 @@ async function exportData() {
                             :disabled="page >= pagination.last_page" 
                             @click="page++; loadData();"
                         >
-                            Berikutnya
+                            {{ $t('button.next') }}
                         </Button>
                     </div>
                 </div>

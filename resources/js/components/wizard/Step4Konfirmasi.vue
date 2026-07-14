@@ -5,12 +5,12 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import api from '@/services/api';
-
-import { jenisLabel } from '@/lib/constants';
 
 const wizard = useWizardStore();
 const router = useRouter();
+const { t } = useI18n();
 const agreed = ref(false);
 const error = ref('');
 
@@ -29,17 +29,17 @@ async function submit() {
         const ticket = data.ticket_number;
 
         // Construct pre-filled WhatsApp message
-        const message = `Halo Satpol PP Jawa Tengah, saya ingin melaporkan temuan rokok ilegal:
+        const message = `${t('wizard.wa_greeting')}
 
-No. Tiket: ${ticket}
-Nama Pelapor: ${wizard.form.nama_pelapor}
-Nomor WA: ${wizard.form.nomor_wa}
-Kabupaten/Kota: ${wizard.form.kabupaten_kota}
-Nama Toko/Warung: ${wizard.form.nama_toko}
-Alamat Lengkap: ${wizard.form.lokasi_kejadian}
-Jenis Rokok: ${jenisLabel[wizard.form.jenis_rokok] || wizard.form.jenis_rokok}
-Merk Rokok: ${wizard.form.merk_rokok}
-Detail Aduan: ${wizard.form.detail_aduan}`;
+${t('label.ticket')}: ${ticket}
+${t('label.name_label')}: ${wizard.form.nama_pelapor}
+${t('label.wa_label')}: ${wizard.form.nomor_wa}
+${t('label.city_kab')}: ${wizard.form.kabupaten_kota}
+${t('label.shop')}: ${wizard.form.nama_toko}
+${t('label.address')}: ${wizard.form.lokasi_kejadian}
+${t('label.cigarette_type')}: ${t('label.jenis_' + wizard.form.jenis_rokok)}
+${t('label.brand')}: ${wizard.form.merk_rokok}
+${t('label.violation_detail')}: ${wizard.form.detail_aduan}`;
 
         const waNumber = (import.meta.env.VITE_WA_CONTACT_NUMBER as string) || '628123456789';
         const encodedText = encodeURIComponent(message);
@@ -50,11 +50,11 @@ Detail Aduan: ${wizard.form.detail_aduan}`;
         window.open(waUrl, '_blank');
     } catch (e: any) {
         if (e.response?.status === 409) {
-            error.value = 'Laporan serupa sudah dikirim dalam 5 menit terakhir.';
+            error.value = t('message.duplicate_report');
         } else if (e.response?.status === 422) {
-            error.value = 'Data tidak valid. Silakan periksa kembali.';
+            error.value = t('message.invalid_data');
         } else {
-            error.value = 'Gagal mengirim laporan. Silakan coba lagi.';
+            error.value = t('message.submit_failed');
         }
     } finally {
         wizard.isSubmitting = false;
@@ -64,37 +64,37 @@ Detail Aduan: ${wizard.form.detail_aduan}`;
 
 <template>
     <div class="space-y-6">
-        <h2 class="text-lg font-semibold">Konfirmasi Laporan</h2>
-        <p class="text-sm text-muted-foreground">Periksa kembali data Anda sebelum dikirim.</p>
+        <h2 class="text-lg font-semibold">{{ $t('wizard.step4_title') }}</h2>
+        <p class="text-sm text-muted-foreground">{{ $t('wizard.step4_subtitle') }}</p>
 
         <div class="bg-muted rounded-lg p-4 space-y-2 text-sm border">
-            <div><strong>Nama:</strong> {{ wizard.form.nama_pelapor }}</div>
-            <div v-if="wizard.form.email"><strong>Email:</strong> {{ wizard.form.email }}</div>
-            <div><strong>WA:</strong> {{ wizard.form.nomor_wa }}</div>
+            <div><strong>{{ $t('label.name_label') }}:</strong> {{ wizard.form.nama_pelapor }}</div>
+            <div v-if="wizard.form.email"><strong>{{ $t('label.email_label') }}:</strong> {{ wizard.form.email }}</div>
+            <div><strong>{{ $t('label.wa_label') }}:</strong> {{ wizard.form.nomor_wa }}</div>
             <hr class="my-2 bg-border">
-            <div><strong>Kab/Kota:</strong> {{ wizard.form.kabupaten_kota }}</div>
-            <div><strong>Alamat:</strong> {{ wizard.form.lokasi_kejadian }}</div>
-            <div><strong>Toko:</strong> {{ wizard.form.nama_toko }}</div>
+            <div><strong>{{ $t('label.city_label') }}:</strong> {{ wizard.form.kabupaten_kota }}</div>
+            <div><strong>{{ $t('label.address_label') }}:</strong> {{ wizard.form.lokasi_kejadian }}</div>
+            <div><strong>{{ $t('label.shop_label') }}:</strong> {{ wizard.form.nama_toko }}</div>
             <hr class="my-2 bg-border">
-            <div><strong>Jenis:</strong> {{ jenisLabel[wizard.form.jenis_rokok] }}</div>
-            <div><strong>Merk:</strong> {{ wizard.form.merk_rokok }}</div>
-            <div><strong>Detail:</strong> {{ wizard.form.detail_aduan }}</div>
-            <div v-if="wizard.form.foto_bukti"><strong>Foto:</strong> Terlampir</div>
+            <div><strong>{{ $t('label.type_label') }}:</strong> {{ $t('label.jenis_' + wizard.form.jenis_rokok) }}</div>
+            <div><strong>{{ $t('label.brand_label') }}:</strong> {{ wizard.form.merk_rokok }}</div>
+            <div><strong>{{ $t('label.detail_label') }}:</strong> {{ wizard.form.detail_aduan }}</div>
+            <div v-if="wizard.form.foto_bukti"><strong>{{ $t('label.photo_label') }}:</strong> {{ $t('label.attached') }}</div>
         </div>
 
         <div class="flex items-start gap-2">
             <Checkbox id="agree" :checked="agreed" @update:checked="(val: boolean) => agreed = val" />
             <Label for="agree" class="text-sm leading-5 cursor-pointer">
-                Saya menyatakan bahwa laporan ini benar dan dapat dipertanggungjawabkan.
+                {{ $t('wizard.declaration') }}
             </Label>
         </div>
 
         <p v-if="error" class="text-sm text-destructive">{{ error }}</p>
 
         <div class="flex justify-between pt-4">
-            <Button variant="outline" @click="wizard.prevStep()">← Kembali</Button>
+            <Button variant="outline" @click="wizard.prevStep()"><!-- eslint-disable-next-line vue/no-parsing-error -->← {{ $t('button.back') }}</Button>
             <Button :disabled="!agreed || wizard.isSubmitting" @click="submit">
-                {{ wizard.isSubmitting ? 'Mengirim...' : 'Kirim Laporan' }}
+                {{ wizard.isSubmitting ? $t('button.sending') : $t('button.submit_report') }}
             </Button>
         </div>
     </div>

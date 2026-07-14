@@ -29,13 +29,13 @@ function onMapUpdate(lat: number, lng: number, source: 'gps' | 'ip' | 'manual') 
 
 <template>
     <div class="space-y-6">
-        <h2 class="text-lg font-semibold">Lokasi Kejadian</h2>
+        <h2 class="text-lg font-semibold">{{ $t('wizard.step2_title') }}</h2>
 
         <div class="space-y-2">
-            <Label>Kabupaten/Kota *</Label>
+            <Label>{{ $t('label.city_kab_required') }}</Label>
             <Select v-model="wizard.form.kabupaten_kota">
                 <SelectTrigger>
-                    <SelectValue placeholder="Pilih kabupaten/kota" />
+                    <SelectValue :placeholder="$t('label.select_city_kab')" />
                 </SelectTrigger>
                 <SelectContent>
                     <SelectItem v-for="kota in kabupatenKotaList" :key="kota.kode" :value="kota.nama">
@@ -46,24 +46,24 @@ function onMapUpdate(lat: number, lng: number, source: 'gps' | 'ip' | 'manual') 
         </div>
 
         <div class="space-y-2">
-            <Label>Pilih Lokasi di Peta</Label>
+            <Label>{{ $t('wizard.choose_location_map') }}</Label>
             <MapPicker @update="onMapUpdate" />
         </div>
 
         <div class="space-y-2">
-            <Label for="alamat">Alamat Lengkap *</Label>
-            <Input id="alamat" v-model="wizard.form.lokasi_kejadian" placeholder="Jl. ..., RT/RW, Kelurahan, Kecamatan" />
+            <Label for="alamat">{{ $t('label.address_required') }}</Label>
+            <Input id="alamat" v-model="wizard.form.lokasi_kejadian" :placeholder="$t('label.address_placeholder')" />
         </div>
 
         <div class="space-y-2">
-            <Label for="toko">Nama Toko/Warung *</Label>
-            <Input id="toko" v-model="wizard.form.nama_toko" placeholder="Nama toko atau warung" />
+            <Label for="toko">{{ $t('label.shop_required') }}</Label>
+            <Input id="toko" v-model="wizard.form.nama_toko" :placeholder="$t('label.shop_placeholder')" />
         </div>
 
         <div class="flex justify-between pt-4">
-            <Button variant="outline" @click="wizard.prevStep()">← Kembali</Button>
+            <Button variant="outline" @click="wizard.prevStep()">← {{ $t('button.back') }}</Button>
             <Button :disabled="!wizard.canProceedStep2" @click="wizard.nextStep()">
-                Lanjut ke Detail →
+                {{ $t('button.next_detail') }} →
             </Button>
         </div>
     </div>

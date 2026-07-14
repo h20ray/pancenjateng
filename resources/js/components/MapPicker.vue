@@ -114,11 +114,11 @@ async function useMyLocation() {
             <input
                 id="map-search"
                 type="text"
-                placeholder="Cari alamat..."
+                :placeholder="$t('wizard.search_address_placeholder')"
                 class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm"
             />
             <Button variant="outline" size="sm" type="button" :disabled="geoLoading" @click="useMyLocation">
-                {{ geoLoading ? '...' : '📍 Lokasi Saya' }}
+                {{ geoLoading ? '...' : '📍 ' + $t('button.use_my_location') }}
             </Button>
         </div>
         <div ref="mapDiv" class="w-full h-[300px] rounded-md border" />

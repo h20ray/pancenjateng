@@ -11,8 +11,8 @@ const wizard = useWizardStore();
 
 <template>
     <div class="max-w-2xl mx-auto py-8 px-4">
-        <h1 class="text-2xl font-bold text-center mb-2">Lapor Rokok Ilegal</h1>
-        <p class="text-muted-foreground text-center mb-8">Laporkan peredaran rokok ilegal di wilayah Anda</p>
+        <h1 class="text-2xl font-bold text-center mb-2">{{ $t('wizard.title') }}</h1>
+        <p class="text-muted-foreground text-center mb-8">{{ $t('wizard.subtitle') }}</p>
 
         <WizardStepIndicator />
 

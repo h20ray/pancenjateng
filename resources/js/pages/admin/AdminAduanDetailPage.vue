@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, nextTick } from 'vue';
+import { ref, onMounted, onUnmounted, nextTick, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import AdminLayout from '@/components/admin/AdminLayout.vue';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -9,11 +9,14 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { loadGoogleMaps } from '@/services/googleMapsLoader';
 import { toast } from 'vue-sonner';
+import { useI18n } from 'vue-i18n';
 import api from '@/services/api';
+import { statusVariant } from '@/lib/constants';
 
 const route = useRoute();
 const router = useRouter();
 const id = route.params.id as string;
+const { t } = useI18n();
 
 const aduan = ref<any>(null);
 const loading = ref(true);
@@ -25,14 +28,12 @@ let mapInstance: google.maps.Map | null = null;
 let markerInstance: google.maps.Marker | null = null;
 let mapTimer: ReturnType<typeof setTimeout> | null = null;
 
-const statusOptions = [
-    { value: 'baru', label: 'Baru' },
-    { value: 'diproses', label: 'Sedang Diproses' },
-    { value: 'selesai', label: 'Selesai' },
-    { value: 'ditolak', label: 'Ditolak' },
-];
-
-import { statusLabel, statusVariant, jenisLabel } from '@/lib/constants';
+const statusOptions = computed(() => [
+    { value: 'baru', label: t('label.status_baru') },
+    { value: 'diproses', label: t('label.status_diproses') },
+    { value: 'selesai', label: t('label.status_selesai') },
+    { value: 'ditolak', label: t('label.status_ditolak') },
+]);
 
 async function loadData() {
     try {
@@ -60,7 +61,7 @@ async function loadData() {
             });
         }
     } catch {
-        error.value = 'Gagal memuat detail aduan.';
+        error.value = t('message.load_aduan_detail_failed');
     } finally {
         loading.value = false;
     }
@@ -84,9 +85,9 @@ async function saveStatus() {
             status: aduan.value.status,
             catatan_admin: aduan.value.catatan_admin,
         });
-        toast.success('Status aduan berhasil diperbarui!');
+        toast.success(t('message.status_updated'));
     } catch {
-        toast.error('Gagal memperbarui status.');
+        toast.error(t('message.status_update_failed'));
     } finally {
         saving.value = false;
     }
@@ -99,45 +100,49 @@ async function resendWa() {
         aduan.value.whatsapp_status = data.whatsapp_status;
         aduan.value.whatsapp_sent_at = data.whatsapp_sent_at;
         if (data.whatsapp_status === 'sent') {
-            toast.success('WhatsApp berhasil dikirim ulang!');
+            toast.success(t('message.wa_resent_success'));
         } else {
-            toast.error('WhatsApp gagal terkirim.');
+            toast.error(t('message.wa_send_failed'));
         }
     } catch {
-        toast.error('Gagal memicu pengiriman ulang WhatsApp.');
+        toast.error(t('message.wa_resend_trigger_failed'));
     } finally {
         resendingWa.value = false;
     }
 }
 
 async function deleteAduan() {
-    if (!confirm('Apakah Anda yakin ingin menghapus aduan ini?')) return;
+    if (!confirm(t('message.delete_confirm'))) return;
     try {
         await api.delete(`/admin/aduan/${id}`);
-        toast.success('Aduan berhasil dihapus.');
+        toast.success(t('message.delete_success'));
         router.push('/admin/aduan');
     } catch {
-        toast.error('Gagal menghapus aduan.');
+        toast.error(t('message.delete_failed'));
     }
 }
 </script>
 
 <template>
     <AdminLayout>
-        <div v-if="loading" class="text-center py-10 text-muted-foreground">Memuat detail aduan...</div>
+        <template #actions v-if="aduan">
+            <Button variant="destructive" size="sm" type="button" @click="deleteAduan" class="flex items-center gap-1.5 font-semibold text-xs rounded-lg">
+                <i class="ki-outline ki-trash text-base"></i>
+                {{ $t('button.delete_report') }}
+            </Button>
+        </template>
+
+        <div v-if="loading" class="text-center py-10 text-muted-foreground">{{ $t('message.loading_detail') }}</div>
         <div v-else-if="error" class="text-center py-10 text-destructive">{{ error }}</div>
         <div v-else class="space-y-6">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div>
-                    <div class="flex items-center gap-3">
-                        <h2 class="text-3xl font-bold tracking-tight">{{ aduan.ticket_number }}</h2>
-                        <Badge :variant="statusVariant[aduan.status]">{{ statusLabel[aduan.status] || aduan.status }}</Badge>
-                    </div>
-                    <p class="text-muted-foreground">Dilaporkan pada {{ new Date(aduan.created_at).toLocaleString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) }} WIB</p>
+            <div class="mb-4">
+                <div class="flex items-center gap-3 mb-1">
+                    <h2 class="text-2xl font-bold tracking-tight">{{ aduan.ticket_number }}</h2>
+                    <Badge :variant="statusVariant[aduan.status]">{{ $t('label.status_' + aduan.status) }}</Badge>
                 </div>
-                <Button variant="destructive" type="button" @click="deleteAduan">
-                    🗑️ Hapus Laporan
-                </Button>
+                <p class="text-xs text-muted-foreground">
+                    {{ $t('label.reported_at') }} {{ new Date(aduan.created_at).toLocaleString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }) }} WIB
+                </p>
             </div>
 
             <div class="grid gap-6 md:grid-cols-3">
@@ -145,31 +150,31 @@ async function deleteAduan() {
                 <div class="md:col-span-2 space-y-6">
                     <Card class="border shadow-sm">
                         <CardHeader>
-                            <CardTitle class="text-lg">Informasi Kejadian</CardTitle>
+                            <CardTitle class="text-lg">{{ $t('aduan.event_info') }}</CardTitle>
                         </CardHeader>
                         <CardContent class="grid gap-4 sm:grid-cols-2 text-sm">
                             <div>
-                                <label class="text-muted-foreground block mb-0.5">Toko / Warung</label>
+                                <label class="text-muted-foreground block mb-0.5">{{ $t('label.shop') }}</label>
                                 <span class="font-semibold text-base">{{ aduan.nama_toko }}</span>
                             </div>
                             <div>
-                                <label class="text-muted-foreground block mb-0.5">Kabupaten / Kota</label>
+                                <label class="text-muted-foreground block mb-0.5">{{ $t('label.city_kab') }}</label>
                                 <span class="font-semibold text-base">{{ aduan.kabupaten_kota }}</span>
                             </div>
                             <div class="sm:col-span-2">
-                                <label class="text-muted-foreground block mb-0.5">Alamat Lengkap</label>
+                                <label class="text-muted-foreground block mb-0.5">{{ $t('label.address') }}</label>
                                 <span class="font-medium">{{ aduan.lokasi_kejadian }}</span>
                             </div>
                             <div>
-                                <label class="text-muted-foreground block mb-0.5">Jenis Rokok</label>
-                                <span class="font-medium capitalize">{{ jenisLabel[aduan.jenis_rokok] || aduan.jenis_rokok.replace('_', ' ') }}</span>
+                                <label class="text-muted-foreground block mb-0.5">{{ $t('label.cigarette_type') }}</label>
+                                <span class="font-medium capitalize">{{ $t('label.jenis_' + aduan.jenis_rokok) }}</span>
                             </div>
                             <div>
-                                <label class="text-muted-foreground block mb-0.5">Merk Rokok</label>
+                                <label class="text-muted-foreground block mb-0.5">{{ $t('label.brand') }}</label>
                                 <span class="font-medium">{{ aduan.merk_rokok }}</span>
                             </div>
                             <div class="sm:col-span-2">
-                                <label class="text-muted-foreground block mb-0.5">Detail Pelanggaran</label>
+                                <label class="text-muted-foreground block mb-0.5">{{ $t('label.violation_detail') }}</label>
                                 <p class="bg-muted/40 p-3 rounded border text-sm leading-relaxed whitespace-pre-line">{{ aduan.detail_aduan }}</p>
                             </div>
                         </CardContent>
@@ -177,16 +182,16 @@ async function deleteAduan() {
 
                     <Card v-if="aduan.foto_bukti" class="border shadow-sm">
                         <CardHeader>
-                            <CardTitle class="text-lg">Foto Bukti</CardTitle>
+                            <CardTitle class="text-lg">{{ $t('aduan.evidence_photo') }}</CardTitle>
                         </CardHeader>
                         <CardContent class="flex justify-center">
-                            <img :src="aduan.foto_bukti" alt="Foto Bukti Rokok Ilegal" class="max-h-[400px] object-contain rounded-md border" />
+                            <img :src="aduan.foto_bukti" :alt="$t('aduan.evidence_photo_alt')" class="max-h-[400px] object-contain rounded-md border" />
                         </CardContent>
                     </Card>
 
                     <Card v-if="aduan.latitude && aduan.longitude" class="border shadow-sm">
                         <CardHeader>
-                            <CardTitle class="text-lg">Lokasi Peta</CardTitle>
+                            <CardTitle class="text-lg">{{ $t('aduan.map_location') }}</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <div ref="mapDiv" class="w-full h-[300px] rounded-md border" />
@@ -199,13 +204,13 @@ async function deleteAduan() {
                     <!-- Tindakan Admin -->
                     <Card class="border shadow-sm">
                         <CardHeader>
-                            <CardTitle class="text-lg">Tindak Lanjut</CardTitle>
-                            <CardDescription>Perbarui status dan catatan internal</CardDescription>
+                            <CardTitle class="text-lg">{{ $t('aduan.action_follow_up') }}</CardTitle>
+                            <CardDescription>{{ $t('aduan.action_follow_up_desc') }}</CardDescription>
                         </CardHeader>
                         <form @submit.prevent="saveStatus">
                             <CardContent class="space-y-4">
                                 <div class="space-y-1">
-                                    <label class="text-xs font-semibold">Ubah Status</label>
+                                    <label class="text-xs font-semibold">{{ $t('aduan.change_status') }}</label>
                                     <Select v-model="aduan.status">
                                         <SelectTrigger>
                                             <SelectValue />
@@ -218,13 +223,13 @@ async function deleteAduan() {
                                     </Select>
                                 </div>
                                 <div class="space-y-1">
-                                    <label class="text-xs font-semibold">Catatan Internal</label>
-                                    <Textarea v-model="aduan.catatan_admin" placeholder="Catatan penyelidikan / penanganan..." rows="4" />
+                                    <label class="text-xs font-semibold">{{ $t('aduan.internal_note') }}</label>
+                                    <Textarea v-model="aduan.catatan_admin" :placeholder="$t('aduan.internal_note_placeholder')" rows="4" />
                                 </div>
                             </CardContent>
                             <CardContent class="pt-0">
                                 <Button type="submit" class="w-full" :disabled="saving">
-                                    {{ saving ? 'Menyimpan...' : 'Simpan Perubahan' }}
+                                    {{ saving ? $t('button.saving') : $t('button.save_changes') }}
                                 </Button>
                             </CardContent>
                         </form>
@@ -233,20 +238,20 @@ async function deleteAduan() {
                     <!-- Identitas Pelapor -->
                     <Card class="border shadow-sm">
                         <CardHeader>
-                            <CardTitle class="text-lg">Profil Pelapor</CardTitle>
-                            <CardDescription>Hanya dapat dilihat oleh admin</CardDescription>
+                            <CardTitle class="text-lg">{{ $t('aduan.reporter_profile') }}</CardTitle>
+                            <CardDescription>{{ $t('aduan.reporter_profile_desc') }}</CardDescription>
                         </CardHeader>
                         <CardContent class="space-y-3 text-sm">
                             <div>
-                                <label class="text-muted-foreground block text-xs">Nama Lengkap</label>
+                                <label class="text-muted-foreground block text-xs">{{ $t('label.full_name') }}</label>
                                 <span class="font-medium">{{ aduan.nama_pelapor }}</span>
                             </div>
                             <div>
-                                <label class="text-muted-foreground block text-xs">Email</label>
-                                <span class="font-medium">{{ aduan.email || '(tidak diisi)' }}</span>
+                                <label class="text-muted-foreground block text-xs">{{ $t('label.email') }}</label>
+                                <span class="font-medium">{{ aduan.email || $t('label.not_filled') }}</span>
                             </div>
                             <div>
-                                <label class="text-muted-foreground block text-xs">Nomor WhatsApp</label>
+                                <label class="text-muted-foreground block text-xs">{{ $t('label.whatsapp_number') }}</label>
                                 <a :href="`https://wa.me/${aduan.nomor_wa}`" target="_blank" class="text-blue-600 hover:underline font-mono">
                                     {{ aduan.nomor_wa }} ↗
                                 </a>
@@ -257,27 +262,28 @@ async function deleteAduan() {
                     <!-- WhatsApp Status -->
                     <Card class="border shadow-sm">
                         <CardHeader>
-                            <CardTitle class="text-lg">Status Notifikasi WA</CardTitle>
-                            <CardDescription>Pengiriman ringkasan aduan ke grup admin</CardDescription>
+                            <CardTitle class="text-lg">{{ $t('aduan.wa_status_title') }}</CardTitle>
+                            <CardDescription>{{ $t('aduan.wa_status_desc') }}</CardDescription>
                         </CardHeader>
                         <CardContent class="space-y-3 text-sm">
                             <div class="flex items-center gap-2">
-                                <span class="text-muted-foreground">Status WA:</span>
+                                <span class="text-muted-foreground">{{ $t('aduan.wa_status') }}:</span>
                                 <Badge :variant="aduan.whatsapp_status === 'sent' ? 'default' : 'destructive'" class="capitalize">
-                                    {{ aduan.whatsapp_status || 'Pending' }}
+                                    {{ aduan.whatsapp_status || $t('label.status_pending') }}
                                 </Badge>
                             </div>
                             <div v-if="aduan.whatsapp_sent_at" class="text-xs text-muted-foreground">
-                                Terkirim: {{ new Date(aduan.whatsapp_sent_at).toLocaleString('id-ID') }}
+                                {{ $t('label.status_sent') }}: {{ new Date(aduan.whatsapp_sent_at).toLocaleString('id-ID') }}
                             </div>
                             <Button 
                                 type="button" 
                                 variant="outline" 
-                                class="w-full" 
+                                class="w-full flex items-center justify-center gap-1.5 font-semibold text-xs rounded-lg" 
                                 :disabled="resendingWa" 
                                 @click="resendWa"
                             >
-                                {{ resendingWa ? 'Mengirim...' : '🔄 Kirim Ulang WA' }}
+                                <i class="ki-outline ki-arrows-loop text-sm" :class="{ 'animate-spin': resendingWa }"></i>
+                                {{ resendingWa ? $t('button.sending') : $t('button.resend_wa') }}
                             </Button>
                         </CardContent>
                     </Card>

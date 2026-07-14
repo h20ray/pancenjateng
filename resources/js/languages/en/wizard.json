@@ -1,0 +1,22 @@
+{
+    "step1_title": "Reporter Identity",
+    "step1_subtitle": "Your data is kept confidential and only used for report verification.",
+    "step2_title": "Incident Location",
+    "choose_location_map": "Select Location on Map",
+    "search_address_placeholder": "Search address...",
+    "step3_title": "Complaint Detail",
+    "step4_title": "Report Confirmation",
+    "step4_subtitle": "Double check your data before sending.",
+    "declaration": "I declare that this report is true and accountable.",
+    "title": "Report Illegal Cigarettes",
+    "subtitle": "Report illegal cigarette circulation in your area",
+    "step_identitas": "Identity",
+    "step_lokasi": "Location",
+    "step_detail": "Detail",
+    "step_konfirmasi": "Confirmation",
+    "success_title": "Report Submitted!",
+    "success_subtitle": "Your report has been received and will be followed up shortly.",
+    "your_ticket_number": "Your Ticket Number",
+    "save_ticket_instruction": "Save the ticket number to track your report status.",
+    "wa_greeting": "Hello Satpol PP Central Java, I would like to report findings of illegal cigarettes:"
+}
