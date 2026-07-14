@@ -50,8 +50,8 @@ Aplikasi ini berjalan sebagai Single Page Application (SPA) dengan router terpus
 Untuk masuk ke Dashboard Admin, gunakan kredensial bawaan berikut setelah database berhasil di-seed:
 
 - **Alamat URL**: `http://localhost:8000/auth/signin`
-- **Email**: `admin@pancenjateng.id`
-- **Password**: `password`
+- **Email**: `andoru.ray@gmail.com`
+- **Password**: `+Codina14`
 
 > [!WARNING]
 > Sangat disarankan untuk segera mengubah email dan password bawaan ini saat pertama kali dideploy di server production demi alasan keamanan.
@@ -121,7 +121,7 @@ Untuk masuk ke Dashboard Admin, gunakan kredensial bawaan berikut setelah databa
    ```
 
 5. **Jalankan Migrasi & Database Seeder**:
-   Inisialisasi database lokal dan buat akun admin bawaan (`admin@pancenjateng.id` / `password`):
+   Inisialisasi database lokal dan buat akun admin bawaan (`andoru.ray@gmail.com` / `+Codina14`):
    ```bash
    php artisan migrate --seed
    ```

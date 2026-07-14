@@ -7,6 +7,10 @@ import enMenu from './messages/en/menu.json';
 import enButton from './messages/en/button.json';
 import enLabel from './messages/en/label.json';
 import enNotification from './messages/en/notification.json';
+import idMenu from './messages/id/menu.json';
+import idButton from './messages/id/button.json';
+import idLabel from './messages/id/label.json';
+import idNotification from './messages/id/notification.json';
 
 // ── Lazy namespaces — loaded in background after initial render ──
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -46,8 +50,12 @@ function flattenMessages(nsMessages: Record<string, Record<string, string>>): Re
 }
 
 // ── Critical messages (eager, for default locale id) ──
-const idCriticalEntries: Record<string, Record<string, string>> = {};
-// Indonesian critical are also lazy — we eagerly ship the default locale only
+const idCriticalEntries: Record<string, Record<string, string>> = {
+  menu: idMenu,
+  button: idButton,
+  label: idLabel,
+  notification: idNotification,
+};
 
 const enCriticalEntries: Record<string, Record<string, string>> = {
   menu: enMenu,
@@ -57,6 +65,7 @@ const enCriticalEntries: Record<string, Record<string, string>> = {
 };
 
 const enCriticalFlat = flattenMessages(enCriticalEntries);
+const idCriticalFlat = flattenMessages(idCriticalEntries);
 
 // ── Language list ──
 const I18N_CONFIG_KEY = 'i18nConfig';
@@ -74,11 +83,11 @@ const I18N_LANGUAGES: Language[] = [
     code: 'id',
     direction: 'ltr',
     flag: toAbsoluteUrl('/media/flags/indonesia.svg'),
-    messages: {},
+    messages: idCriticalFlat,
   },
 ];
 
-// Default is Indonesian — its critical messages are loaded lazily on boot
+// Default is Indonesian
 const I18N_DEFAULT_LANGUAGE: Language = I18N_LANGUAGES[1];
 
 export {
@@ -86,6 +95,7 @@ export {
   I18N_DEFAULT_LANGUAGE,
   I18N_LANGUAGES,
   enCriticalEntries,
+  idCriticalEntries,
   enLazyModules,
   idModules,
   loadLazyLocale,

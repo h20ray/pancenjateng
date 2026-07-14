@@ -5,6 +5,7 @@ import { PublicLayout } from '@/layouts/public/layout';
 import { AdminDashboardPage } from '@/pages/admin/AdminDashboardPage';
 import { AdminAduanListPage } from '@/pages/admin/AdminAduanListPage';
 import { AdminAduanDetailPage } from '@/pages/admin/AdminAduanDetailPage';
+import { AdminSettingsPage } from '@/pages/admin/AdminSettingsPage';
 import { WizardFormPage } from '@/pages/public/WizardFormPage';
 import { SuccessPage } from '@/pages/public/SuccessPage';
 import { TrackingPage } from '@/pages/public/TrackingPage';
@@ -29,6 +30,7 @@ export function AppRoutingSetup() {
           <Route path="/admin" element={<AdminDashboardPage />} />
           <Route path="/admin/aduan" element={<AdminAduanListPage />} />
           <Route path="/admin/aduan/:id" element={<AdminAduanDetailPage />} />
+          <Route path="/admin/settings" element={<AdminSettingsPage />} />
         </Route>
       </Route>
 

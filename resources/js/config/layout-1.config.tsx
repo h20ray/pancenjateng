@@ -34,8 +34,8 @@ const MENU_SIDEBAR: MenuConfig = [
   {
     title: 'Pengaturan',
     icon: Settings,
-    path: '/settings',
-    disabled: true,
+    path: '/admin/settings',
+    rootPath: '/admin/settings',
   },
 ];
 

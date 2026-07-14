@@ -9,6 +9,7 @@ import {
   I18N_CONFIG_KEY,
   I18N_DEFAULT_LANGUAGE,
   I18N_LANGUAGES,
+  CRITICAL,
   enLazyModules,
   idModules,
   loadLazyLocale,
@@ -50,12 +51,12 @@ const I18nProvider = ({ children }: PropsWithChildren) => {
     if (currentLanguage.code === 'en') {
       loadLazyLocale(enLazyModules, {}).then(setLazyMessages);
     } else {
-      // id — all namespaces are lazy, load everything
-      idModules['./messages/id/menu.json']?.().then(() => {});
+      // id — non-critical namespaces are lazy-loaded in background
       const loadAll = async () => {
         const raw: Record<string, Record<string, string>> = {};
         const promises = Object.entries(idModules).map(async ([path, loader]) => {
           const ns = path.replace('./messages/id/', '').replace('.json', '');
+          if (CRITICAL.has(ns)) return;
           const mod = await loader();
           raw[ns] = mod.default ?? mod;
         });

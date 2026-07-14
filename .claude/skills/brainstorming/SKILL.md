@@ -36,7 +36,7 @@ Get approval after each section before continuing. Don't dump the entire design 
 3. **Edge cases & risks** — what could go wrong, what's explicitly out of scope
 
 ### 5. Write the spec
-Save to `docs/specs/YYYY-MM-DD-<topic>-design.md` (or project-preferred location). The spec must be:
+Save to `.kiro/specs/<topic>/design.md` (or project-preferred location). The spec must be:
 - Self-contained — readable by someone with no context
 - Concrete — no "TBD", "TODO", or "handle edge cases"
 - Verifiable — success criteria are testable

@@ -59,6 +59,17 @@ Before opening a PR, run every check and confirm zero failures.
 
 Vuex has been fully removed. All state management must use Pinia. Create stores under `resources/js/stores/` using `defineStore`. Use Composition API (`<script setup>`) for all new components.
 
+## Design reference: Metronic demo1
+
+`C:\GitHub\master\metronic` is the canonical reference for all UI/UX decisions. Before writing any new component, layout, route, or interaction pattern, check how it's done there first — and match it.
+
+- **Components**: Copy structure, slot patterns, prop shapes, and event handling from the equivalent Metronic component.
+- **Layouts**: Sidebar, header, footer, page wrappers — all follow Metronic's demo1 conventions.
+- **Routes & navigation**: Match Metronic's menu structure, breadcrumb patterns, and URL naming.
+- **Styling**: Metronic demo1 uses Tailwind. Match its utility class combinations, spacing, and responsive breakpoints.
+
+When a design question isn't answered by this codebase alone, the answer lives in `C:\GitHub\master\metronic`.
+
 ## Styling: Tailwind + shadcn-vue only
 
 Use Tailwind utilities for layout/styling and shadcn-vue (Reka UI) components from `resources/js/components/ui/` for interactive primitives. Use `cn()` from `@/lib/utils` for class merging.
