@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    "jsx": "preserve",
+    "paths": {
+      "@/*": ["./resources/js/*"]
+    },
+    "types": ["vite/client", "google.maps"]
+  },
+  "include": ["resources/js/**/*.ts", "resources/js/**/*.vue"]
+}
