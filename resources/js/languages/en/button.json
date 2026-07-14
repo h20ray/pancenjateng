@@ -1,0 +1,23 @@
+{
+    "toggle_theme": "Toggle theme",
+    "view_detail": "View Detail",
+    "detail": "Detail",
+    "export_csv": "Export CSV",
+    "previous": "Previous",
+    "next": "Next",
+    "delete_report": "Delete Report",
+    "saving": "Saving...",
+    "save_changes": "Save Changes",
+    "sending": "Sending...",
+    "resend_wa": "Resend WA",
+    "back": "Back",
+    "next_location": "Continue to Location",
+    "next_detail": "Continue to Detail",
+    "review_report": "Review Report",
+    "submit_report": "Submit Report",
+    "create_new_report": "Create New Report",
+    "track_report": "Track Report",
+    "track": "Track",
+    "use_my_location": "Use My Location",
+    "searching": "Searching..."
+}

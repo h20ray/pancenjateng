@@ -1,0 +1,18 @@
+{
+    "dashboard": "Dashboard",
+    "aduan_list": "Complaints List",
+    "overview_dashboard": "Dashboard Overview",
+    "overview_dashboard_desc": "Overview of the system performance and reports",
+    "aduan_list_title": "Complaints Report List",
+    "aduan_list_desc": "Manage and track user submitted complaints",
+    "aduan_detail_title": "Complaint Report Detail",
+    "aduan_detail_desc": "Detailed view of the complaint submission",
+    "admin_panel": "Admin Panel",
+    "admin": "Admin",
+    "detail": "Detail",
+    "admin_section": "Admin Menu",
+    "dashboard_section": "Dashboard Menu",
+    "footer_guide": "Guide",
+    "footer_help": "Help",
+    "footer_privacy": "Privacy Policy"
+}

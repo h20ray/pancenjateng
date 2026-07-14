@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Setting;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,11 +14,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        User::updateOrCreate(
+            ['email' => env('ADMIN_EMAIL', 'admin@pancenjateng.id')],
+            [
+                'name' => 'Administrator',
+                'password' => Hash::make(env('ADMIN_PASSWORD', 'password')),
+            ],
+        );
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        Setting::upsert([
+            ['key' => 'app_name', 'value' => 'Pancen Jateng'],
+            ['key' => 'app_description', 'value' => 'Sistem Pengaduan Rokok Ilegal Provinsi Jawa Tengah'],
+            ['key' => 'organization_name', 'value' => 'Satpol PP Provinsi Jawa Tengah'],
+            ['key' => 'organization_address', 'value' => null],
+            ['key' => 'organization_phone', 'value' => null],
+            ['key' => 'organization_email', 'value' => null],
+            ['key' => 'default_whatsapp_target', 'value' => null],
+        ], ['key'], ['value']);
     }
 }

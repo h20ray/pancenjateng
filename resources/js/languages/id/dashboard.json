@@ -1,0 +1,19 @@
+{
+    "status_title": "Status Laporan",
+    "status_subtitle": "Komposisi status penanganan aduan",
+    "reports_count": "Laporan",
+    "map_title": "Peta Persebaran",
+    "map_subtitle": "Lokasi peredaran rokok ilegal yang dilaporkan",
+    "recent_title": "10 Laporan Terbaru",
+    "recent_subtitle": "Aduan yang baru saja masuk ke sistem",
+    "stats_total": "Total Laporan",
+    "stats_total_desc": "Semua laporan terdaftar",
+    "stats_today": "Hari Ini",
+    "stats_today_desc": "Laporan masuk hari ini",
+    "stats_week": "Minggu Ini",
+    "stats_week_desc": "Laporan masuk minggu ini",
+    "stats_month": "Bulan Ini",
+    "stats_month_desc": "Laporan masuk bulan ini",
+    "map_shop": "Toko",
+    "map_status": "Status"
+}

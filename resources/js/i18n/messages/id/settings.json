@@ -1,0 +1,17 @@
+{
+  "page_title": "Pengaturan — Pancen Jateng",
+  "page_description": "Konfigurasi umum aplikasi",
+  "card_title": "Pengaturan Umum",
+  "card_description": "Atur identitas aplikasi, informasi instansi, dan kontak.",
+  "save": "Simpan",
+  "saving": "Menyimpan...",
+  "save_success": "Pengaturan berhasil disimpan.",
+  "save_error": "Gagal menyimpan pengaturan.",
+  "field_app_name": "Nama Aplikasi",
+  "field_app_description": "Deskripsi Aplikasi",
+  "field_organization_name": "Nama Instansi",
+  "field_organization_address": "Alamat Instansi",
+  "field_organization_phone": "Telepon Instansi",
+  "field_organization_email": "Email Instansi",
+  "field_default_whatsapp_target": "Target WhatsApp Default"
+}

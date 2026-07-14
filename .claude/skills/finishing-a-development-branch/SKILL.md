@@ -24,7 +24,7 @@ If tests fail, stop here. Fix them before proceeding.
 
 ```bash
 git status
-git diff --stat origin/main...HEAD
+git diff --stat origin/master...HEAD
 ```
 
 Summarize what's on this branch: commits, files changed, anything uncommitted.
@@ -41,7 +41,7 @@ For a normal branch:
 
 | Option | What it does | When to use |
 |---|---|---|
-| **Merge locally** | `git checkout main && git merge <branch>` | You're ready to integrate into main |
+| **Merge locally** | `git checkout master && git merge <branch>` | You're ready to integrate into master |
 | **Push + create PR** | Push branch, open a PR via `gh pr create` | You want review before merging |
 | **Keep as-is** | Leave the branch untouched | You're pausing or handing off |
 | **Discard** | Delete the branch locally (and remote if pushed) | The work was experimental or abandoned |
@@ -52,10 +52,10 @@ For detached HEAD, omit Discard (you're not on a branch to delete).
 
 **Merge locally:**
 ```bash
-git checkout main
-git pull origin main
+git checkout master
+git pull origin master
 git merge <branch>
-git push origin main
+git push origin master
 ```
 
 **Push + PR:**
@@ -66,7 +66,7 @@ gh pr create --title "..." --body "..."
 
 **Discard (with confirmation):**
 ```bash
-git checkout main
+git checkout master
 git branch -D <branch>
 git push origin --delete <branch>  # if remote exists
 ```
@@ -82,7 +82,7 @@ If you're in a git worktree created for this branch:
 
 | Wrong | Right |
 |---|---|
-| Forgetting to pull main before merging | Always `git pull origin main` first |
+| Forgetting to pull master before merging | Always `git pull origin master` first |
 | Discarding without confirming the user wants that | "Discard" means permanent deletion — confirm explicitly |
 | Leaving worktrees around after merging | Clean up worktrees for merged/discarded branches |
 | Amending commits on a pushed branch | Only amend if the branch hasn't been pushed |
@@ -91,4 +91,4 @@ If you're in a git worktree created for this branch:
 
 - Uncommitted changes when trying to finish — stash or commit first
 - Tests not passing — never merge with failing tests
-- Branch has diverged significantly from main — consider rebasing before merging
+- Branch has diverged significantly from master — consider rebasing before merging

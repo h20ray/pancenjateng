@@ -1,0 +1,16 @@
+{
+  "login_success": "Login berhasil",
+  "login_failed": "Login gagal. Periksa email dan password Anda.",
+  "logout_success": "Anda telah logout",
+  "status_updated": "Status berhasil diperbarui",
+  "status_update_failed": "Gagal memperbarui status",
+  "aduan_deleted": "Aduan berhasil dihapus",
+  "aduan_delete_failed": "Gagal menghapus aduan",
+  "wa_sent": "WhatsApp terkirim",
+  "wa_failed": "Gagal mengirim WhatsApp",
+  "report_success": "Laporan berhasil dikirim",
+  "report_duplicate": "Laporan serupa sudah dikirim dalam 5 menit terakhir",
+  "report_failed": "Gagal mengirim laporan. Silakan coba lagi.",
+  "photo_too_large": "Ukuran foto maksimal 2MB",
+  "session_expired": "Sesi berakhir. Silakan login kembali."
+}

@@ -1,0 +1,14 @@
+{
+  "save": "Save",
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "back": "Back",
+  "submit": "Submit",
+  "send": "Send",
+  "search": "Search",
+  "export_csv": "Export CSV",
+  "view_all": "View All",
+  "resend_wa": "Resend WA",
+  "logout": "Logout",
+  "login": "Login"
+}

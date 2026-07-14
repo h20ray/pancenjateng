@@ -13,7 +13,7 @@ Aligned with: **Goal-Driven Execution** (CLAUDE.md principle #4).
 
 **Announce at start:** "I'm using the writing-plans skill to create the implementation plan."
 
-**Save plans to:** `docs/plans/YYYY-MM-DD-<feature-name>.md`
+**Save plans to:** `.claude/plans/<feature-slug>.md`
 
 ## Scope Check
 
@@ -104,6 +104,10 @@ Every step must contain actual content. These are plan failures — never write 
 - Steps that describe what to do without showing how
 - References to types, functions, or methods not defined in any task
 
+## Per-Task Commits
+
+Don't commit after every 2–5 minute task. Batch commits into 1–3 meaningful units per PR. Follow the project's PR workflow: one PR per feature, no commit noise.
+
 ## Self-Review
 
 After writing the plan, check:
@@ -120,4 +124,4 @@ After saving the plan:
 
 > "Plan complete and saved to `docs/plans/<filename>.md`. Ready to implement. I'll work through each task, committing after each one. Sound good?"
 
-Then execute task by task. Don't skip steps. Don't batch commits across tasks. Each task is a self-contained unit of work.
+Then execute task by task. Don't skip steps. Commit after completing a logical group of tasks (1–3 commits per feature).

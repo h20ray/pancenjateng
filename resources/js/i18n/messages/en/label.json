@@ -1,0 +1,22 @@
+{
+  "new": "New",
+  "in_progress": "In Progress",
+  "completed": "Completed",
+  "rejected": "Rejected",
+  "total": "Total",
+  "today": "Today",
+  "this_week": "This Week",
+  "this_month": "This Month",
+  "dark_mode": "Dark Mode",
+  "language": "Language",
+  "admin": "Admin",
+  "profile": "Profile",
+  "email": "Email",
+  "password": "Password",
+  "name": "Name",
+  "phone": "Phone",
+  "date": "Date",
+  "location": "Location",
+  "photo": "Photo",
+  "status": "Status"
+}

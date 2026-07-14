@@ -1,0 +1,17 @@
+{
+  "page_title": "Settings — Pancen Jateng",
+  "page_description": "General application configuration",
+  "card_title": "General Settings",
+  "card_description": "Set application identity, institution info, and contact details.",
+  "save": "Save",
+  "saving": "Saving...",
+  "save_success": "Settings saved successfully.",
+  "save_error": "Failed to save settings.",
+  "field_app_name": "Application Name",
+  "field_app_description": "Application Description",
+  "field_organization_name": "Institution Name",
+  "field_organization_address": "Institution Address",
+  "field_organization_phone": "Institution Phone",
+  "field_organization_email": "Institution Email",
+  "field_default_whatsapp_target": "Default WhatsApp Target"
+}

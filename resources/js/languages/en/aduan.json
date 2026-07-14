@@ -1,0 +1,16 @@
+{
+    "event_info": "Event Information",
+    "evidence_photo": "Evidence Photo",
+    "evidence_photo_alt": "Illegal Cigarette Evidence Photo",
+    "map_location": "Map Location",
+    "action_follow_up": "Follow Up",
+    "action_follow_up_desc": "Update status and internal notes",
+    "change_status": "Change Status",
+    "internal_note": "Internal Note",
+    "internal_note_placeholder": "Investigation / handling notes...",
+    "reporter_profile": "Reporter Profile",
+    "reporter_profile_desc": "Can only be viewed by admin",
+    "wa_status_title": "WA Notification Status",
+    "wa_status_desc": "Sending complaint summary to admin group",
+    "wa_status": "WA Status"
+}

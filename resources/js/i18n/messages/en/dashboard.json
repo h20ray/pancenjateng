@@ -1,0 +1,11 @@
+{
+  "title": "Dashboard",
+  "description": "Complaint data summary",
+  "total_complaints": "Total Complaints",
+  "all_time": "All time",
+  "last_7_days": "Last 7 days",
+  "last_30_days": "Last 30 days",
+  "status_breakdown": "Complaint Status",
+  "recent_reports": "Recent Reports",
+  "no_reports": "No reports yet"
+}
