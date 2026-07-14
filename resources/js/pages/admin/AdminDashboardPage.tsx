@@ -14,7 +14,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { fetchDashboardStats } from '@/services/aduanApi';
 import type { Aduan } from '@/types/aduan';
 import {
-  Download,
   FileText,
   TrendingUp,
   Users,
@@ -22,7 +21,6 @@ import {
   CheckCircle2,
   XCircle,
   AlertCircle,
-  Loader2,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useMemo } from 'react';
@@ -39,6 +37,7 @@ export function AdminDashboardPage() {
     queryKey: ['dashboard-stats'],
     queryFn: fetchDashboardStats,
     refetchInterval: 60_000,
+    refetchIntervalInBackground: false,
   });
 
   const recentAduans = useMemo(() => stats?.terbaru ?? [], [stats]);

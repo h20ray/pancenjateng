@@ -18,8 +18,12 @@ class SettingController extends Controller
 
     public function update(UpdateSettingsRequest $request): JsonResponse
     {
-        $this->settingService->update($request->validated());
+        try {
+            $this->settingService->update($request->validated());
 
-        return response()->json(['message' => 'Pengaturan berhasil disimpan.']);
+            return response()->json(['message' => 'Pengaturan berhasil disimpan.']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Gagal menyimpan pengaturan.'], 500);
+        }
     }
 }

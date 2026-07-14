@@ -48,23 +48,38 @@ const I18nProvider = ({ children }: PropsWithChildren) => {
 
   // Boot: load non-critical messages for current locale in background
   useEffect(() => {
+    let cancelled = false;
+
     if (currentLanguage.code === 'en') {
-      loadLazyLocale(enLazyModules, {}).then(setLazyMessages);
+      loadLazyLocale(enLazyModules, {})
+        .then((messages) => {
+          if (!cancelled) setLazyMessages(messages);
+        })
+        .catch(() => {
+          // Lazy messages are non-critical — silently ignore load failures
+        });
     } else {
-      // id — non-critical namespaces are lazy-loaded in background
       const loadAll = async () => {
         const raw: Record<string, Record<string, string>> = {};
         const promises = Object.entries(idModules).map(async ([path, loader]) => {
           const ns = path.replace('./messages/id/', '').replace('.json', '');
           if (CRITICAL.has(ns)) return;
-          const mod = await loader();
-          raw[ns] = mod.default ?? mod;
+          try {
+            const mod = await loader();
+            raw[ns] = mod.default ?? mod;
+          } catch {
+            // Skip individual module failures
+          }
         });
         await Promise.all(promises);
-        setLazyMessages(raw);
+        if (!cancelled) setLazyMessages(raw);
       };
       loadAll();
     }
+
+    return () => {
+      cancelled = true;
+    };
   }, [currentLanguage.code]);
 
   const changeLanguage = (language: Language) => {

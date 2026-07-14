@@ -40,15 +40,18 @@ export async function exportCsv(filters: AduanFilters = {}): Promise<void> {
   });
 
   const url = window.URL.createObjectURL(new Blob([response.data]));
-  const link = document.createElement('a');
-  link.href = url;
-  const disposition = response.headers['content-disposition'];
-  const filename = disposition?.match(/filename="?(.+)"?/)?.[1] ?? 'export.csv';
-  link.setAttribute('download', filename);
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  window.URL.revokeObjectURL(url);
+  try {
+    const link = document.createElement('a');
+    link.href = url;
+    const disposition = response.headers['content-disposition'];
+    const filename = disposition?.match(/filename="?(.+)"?/)?.[1] ?? 'export.csv';
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  } finally {
+    window.URL.revokeObjectURL(url);
+  }
 }
 
 export async function exportCsvSafe(filters: AduanFilters = {}): Promise<{ success: boolean; error?: string }> {

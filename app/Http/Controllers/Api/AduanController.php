@@ -26,7 +26,11 @@ class AduanController extends Controller
 
         $aduan = $this->aduanService->store($request);
 
-        $this->whatsappService->sendRecap($aduan);
+        try {
+            $this->whatsappService->sendRecap($aduan);
+        } catch (\Exception $e) {
+            // Aduan already persisted; WhatsApp delivery is best-effort
+        }
 
         return (new AduanResource($aduan))
             ->response()

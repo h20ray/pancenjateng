@@ -14,8 +14,12 @@ class WhatsappService
         $token = config('services.whatsapp.token');
         $target = config('services.whatsapp.target');
 
-        if (! $url || ! $token) {
-            Log::warning('WhatsApp gateway not configured');
+        if (! $url || ! $token || ! $target) {
+            Log::warning('WhatsApp gateway not configured', [
+                'url' => (bool) $url,
+                'token' => (bool) $token,
+                'target' => (bool) $target,
+            ]);
             $aduan->update(['whatsapp_status' => 'pending']);
 
             return;

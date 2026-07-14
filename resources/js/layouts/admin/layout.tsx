@@ -17,7 +17,6 @@ export function AdminLayout() {
   const item = getCurrentItem(MENU_SIDEBAR);
   const { settings, setOption } = useSettings();
 
-
   useEffect(() => {
     setOption('layout', 'app-layout');
   }, [setOption]);

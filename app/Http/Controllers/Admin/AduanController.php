@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AduanUpdateStatusRequest;
 use App\Http\Resources\AduanDetailResource;
+use App\Http\Resources\AduanResource;
 use App\Models\Aduan;
 use App\Services\WhatsappService;
 use Illuminate\Http\JsonResponse;
@@ -13,6 +14,10 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AduanController extends Controller
 {
+    public function __construct(
+        private WhatsappService $whatsappService,
+    ) {}
+
     private function applyFilters($query, Request $request): void
     {
         if ($request->status) {
@@ -40,7 +45,13 @@ class AduanController extends Controller
 
         $aduans = $query->orderByDesc('created_at')->paginate($request->per_page ?? 15);
 
-        return response()->json($aduans);
+        return response()->json([
+            'data' => AduanResource::collection($aduans->items()),
+            'current_page' => $aduans->currentPage(),
+            'last_page' => $aduans->lastPage(),
+            'per_page' => $aduans->perPage(),
+            'total' => $aduans->total(),
+        ]);
     }
 
     public function show(Aduan $aduan): JsonResponse
@@ -128,14 +139,16 @@ class AduanController extends Controller
         }, 200, $headers);
     }
 
-    public function resendWhatsapp(Aduan $aduan, WhatsappService $whatsappService): JsonResponse
+    public function resendWhatsapp(Aduan $aduan): JsonResponse
     {
-        $whatsappService->sendRecap($aduan);
+        $this->whatsappService->sendRecap($aduan);
+
+        $aduan->refresh();
 
         return response()->json([
             'message' => 'WhatsApp sent request fired.',
             'whatsapp_status' => $aduan->whatsapp_status,
-            'whatsapp_sent_at' => $aduan->whatsapp_sent_at ? $aduan->whatsapp_sent_at->toIso8601String() : null,
+            'whatsapp_sent_at' => $aduan->whatsapp_sent_at?->toIso8601String(),
         ]);
     }
 }

@@ -181,7 +181,7 @@ export function AdminAduanListPage() {
                     </TableCell>
                     <TableCell className="text-sm">{aduan.kabupaten_kota}</TableCell>
                     <TableCell className="text-sm capitalize">
-                      {aduan.jenis_rokok.replace(/_/g, ' ')}
+                      {aduan.jenis_rokok?.replace(/_/g, ' ') ?? '—'}
                     </TableCell>
                     <TableCell>
                       <Badge variant={STATUS_VARIANT[aduan.status] ?? 'secondary'} size="sm">

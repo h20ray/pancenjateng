@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -56,9 +56,12 @@ export function AdminSettingsPage() {
     queryFn: fetchSettings,
   });
 
+  const initialised = useRef(false);
+
   useEffect(() => {
-    if (settings) {
+    if (settings && !initialised.current) {
       setForm({ ...EMPTY_FORM, ...settings });
+      initialised.current = true;
     }
   }, [settings]);
 
