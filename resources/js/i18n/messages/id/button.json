@@ -1,0 +1,14 @@
+{
+  "save": "Simpan",
+  "cancel": "Batal",
+  "delete": "Hapus",
+  "back": "Kembali",
+  "submit": "Kirim",
+  "send": "Kirim",
+  "search": "Cari",
+  "export_csv": "Ekspor CSV",
+  "view_all": "Lihat Semua",
+  "resend_wa": "Kirim Ulang WA",
+  "logout": "Keluar",
+  "login": "Masuk"
+}

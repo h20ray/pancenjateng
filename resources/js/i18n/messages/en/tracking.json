@@ -1,0 +1,13 @@
+{
+  "title": "Track Complaint",
+  "subtitle": "Enter your ticket number and WhatsApp number to check status",
+  "check_status": "Check Status",
+  "ticket_placeholder": "e.g. ADN-20260101-0001",
+  "phone_placeholder": "e.g. 081234567890",
+  "searching": "Searching...",
+  "not_found_title": "Report not found",
+  "not_found_desc": "Please check your ticket number and WhatsApp number.",
+  "fill_all": "Please fill in the ticket number and WhatsApp number.",
+  "reported_on": "Reported on",
+  "last_updated": "Last updated"
+}

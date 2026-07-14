@@ -1,29 +1,24 @@
-import { defineConfig } from 'vite';
-import vue from '@vitejs/plugin-vue';
+import { fileURLToPath, URL } from 'node:url';
 import tailwindcss from '@tailwindcss/vite';
+import react from '@vitejs/plugin-react';
 import laravel from 'laravel-vite-plugin';
-import path from 'path';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
-    plugins: [
-        laravel({
-            input: ['resources/js/app.ts'],
-            refresh: true,
-        }),
-        vue(),
-        tailwindcss(),
-    ],
-    resolve: {
-        alias: {
-            '@': path.resolve(__dirname, './resources/js'),
-        },
+  plugins: [
+    laravel({
+      input: ['resources/js/main.tsx'],
+      refresh: true,
+    }),
+    react(),
+    tailwindcss(),
+  ],
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./resources/js', import.meta.url)),
     },
-    build: {
-        rollupOptions: {
-            onwarn(warning, warn) {
-                if (warning.code === 'INVALID_ANNOTATION') return;
-                warn(warning);
-            },
-        },
-    },
+  },
+  build: {
+    chunkSizeWarningLimit: 3000,
+  },
 });

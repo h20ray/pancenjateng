@@ -1,0 +1,16 @@
+{
+  "login_success": "Login successful",
+  "login_failed": "Login failed. Check your email and password.",
+  "logout_success": "You have been logged out",
+  "status_updated": "Status updated successfully",
+  "status_update_failed": "Failed to update status",
+  "aduan_deleted": "Complaint deleted",
+  "aduan_delete_failed": "Failed to delete complaint",
+  "wa_sent": "WhatsApp sent",
+  "wa_failed": "Failed to send WhatsApp",
+  "report_success": "Report submitted successfully",
+  "report_duplicate": "A similar report was already submitted in the last 5 minutes",
+  "report_failed": "Failed to submit report. Please try again.",
+  "photo_too_large": "Photo size must be under 2MB",
+  "session_expired": "Session expired. Please login again."
+}

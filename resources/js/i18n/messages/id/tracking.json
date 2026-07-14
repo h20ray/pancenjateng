@@ -1,0 +1,13 @@
+{
+  "title": "Lacak Pengaduan",
+  "subtitle": "Masukkan nomor tiket dan nomor WhatsApp yang digunakan saat melapor",
+  "check_status": "Cek Status",
+  "ticket_placeholder": "Contoh: ADN-20260101-0001",
+  "phone_placeholder": "Contoh: 081234567890",
+  "searching": "Mencari...",
+  "not_found_title": "Laporan tidak ditemukan",
+  "not_found_desc": "Periksa kembali nomor tiket dan nomor WhatsApp Anda.",
+  "fill_all": "Mohon isi nomor tiket dan nomor WhatsApp.",
+  "reported_on": "Dilaporkan",
+  "last_updated": "Terakhir diperbarui"
+}

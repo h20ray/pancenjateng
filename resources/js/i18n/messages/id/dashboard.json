@@ -1,0 +1,11 @@
+{
+  "title": "Dashboard",
+  "description": "Ringkasan data pengaduan rokok ilegal",
+  "total_complaints": "Total Aduan",
+  "all_time": "Sepanjang waktu",
+  "last_7_days": "7 hari terakhir",
+  "last_30_days": "30 hari terakhir",
+  "status_breakdown": "Status Pengaduan",
+  "recent_reports": "Laporan Terbaru",
+  "no_reports": "Belum ada laporan"
+}

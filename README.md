@@ -9,39 +9,39 @@ Pancen Jateng adalah aplikasi Single Page Application (SPA) berbasis web untuk m
 ### 1. Portal Pelapor (Masyarakat)
 - **Formulir Laporan Multi-Step (Wizard)**:
   - **Identitas Pelapor**: Nama pelapor, email (opsional), dan nomor WhatsApp.
-  - **Lokasi Kejadian**: Peta interaktif Google Maps terintegrasi dengan Geolocation (📍 Lokasi Saya) dan pencarian alamat otomatis menggunakan Places Autocomplete.
+  - **Lokasi Kejadian**: Pilih kabupaten/kota, alamat lengkap, dan nama toko.
   - **Detail Laporan**: Klasifikasi jenis rokok (SKM, SKT, Iris, Cerutu), merk rokok, foto bukti pelanggaran, dan deskripsi kejadian.
-  - **Review & Konfirmasi**: Halaman ringkasan sebelum data dikirimkan ke sistem.
 - **Pelacakan Status**: Halaman khusus untuk melacak status penanganan laporan secara real-time menggunakan nomor tiket aduan dan nomor WhatsApp pelapor.
 
 ### 2. Portal Admin (Satpol PP)
 - **Dashboard Overview**:
   - KPI Stat Cards (Total Aduan, Hari Ini, Minggu Ini, Bulan Ini).
-  - Grafik breakdown status laporan aduan (Baru, Diproses, Selesai, Ditolak).
-  - Peta Persebaran Geospasial interaktif yang menampilkan pin marker lokasi aduan lengkap dengan info detail popup.
+  - Breakdown status laporan aduan (Baru, Diproses, Selesai, Ditolak).
+  - Daftar laporan terbaru dengan akses cepat ke detail.
 - **Manajemen Aduan**:
-  - Tabel log aduan dengan pencarian teks, pagination, serta filtrasi data berdasarkan status aduan, kabupaten/kota, dan jenis rokok.
-  - Detail aduan lengkap termasuk foto bukti, koordinat peta presisi, serta riwayat notifikasi.
-  - Pembaruan status aduan (Baru -> Diproses -> Selesai / Ditolak) disertai penulisan catatan internal admin.
-  - Export laporan aduan berformat **CSV/Excel** terproteksi hak akses admin.
+  - Tabel log aduan dengan pencarian teks, pagination, serta filtrasi data berdasarkan status aduan dan jenis rokok.
+  - Detail aduan lengkap termasuk foto bukti, koordinat peta, serta riwayat notifikasi WhatsApp.
+  - Pembaruan status aduan (Baru → Diproses → Selesai / Ditolak) disertai penulisan catatan internal admin.
+  - Export laporan aduan berformat **CSV** dengan UTF-8 BOM.
   - Fitur kirim ulang notifikasi WhatsApp jika terdapat kegagalan integrasi API.
+  - Hapus aduan (soft delete) dengan konfirmasi dialog.
 
 ---
 
 ## 🌐 Navigasi & Alamat URL Halaman
 
-Aplikasi ini berjalan sebagai Single Page Application (SPA) dengan router terpusat pada Vue Router. Berikut adalah alamat URL untuk masing-masing halaman:
+Aplikasi ini berjalan sebagai Single Page Application (SPA) dengan router terpusat pada React Router v7. Berikut adalah alamat URL untuk masing-masing halaman:
 
 | Halaman | URL | Keterangan |
 | --- | --- | --- |
 | **Landing Redirect** | `/` | Mengarahkan pelapor langsung ke halaman formulir laporan (`/lapor`). |
 | **Formulir Laporan** | `/lapor` | Halaman multi-step wizard untuk membuat pengaduan rokok ilegal baru. |
-| **Laporan Berhasil** | `/lapor/berhasil/{ticket}` | Halaman konfirmasi setelah laporan berhasil dikirim (menampilkan nomor tiket). |
+| **Laporan Berhasil** | `/lapor/berhasil/:ticket` | Halaman konfirmasi setelah laporan berhasil dikirim (menampilkan nomor tiket). |
 | **Pelacakan Laporan** | `/lacak` | Halaman tracking status aduan menggunakan nomor tiket & nomor WhatsApp. |
-| **Login Admin** | `/admin/login` | Halaman login otentikasi admin untuk masuk ke portal Satpol PP. |
-| **Dashboard Admin** | `/admin` | Ringkasan statistik, bagan status, dan peta sebaran lokasi aduan. |
+| **Login Admin** | `/auth/signin` | Halaman login otentikasi admin untuk masuk ke portal Satpol PP. |
+| **Dashboard Admin** | `/admin` | Ringkasan statistik, bagan status, dan daftar laporan terbaru. |
 | **Daftar Laporan Admin** | `/admin/aduan` | Kelola seluruh daftar aduan masuk, pencarian filter, dan export CSV. |
-| **Detail Laporan Admin** | `/admin/aduan/{id}` | Halaman penanganan detail aduan, pembaruan status, catatan admin, & kirim ulang WA. |
+| **Detail Laporan Admin** | `/admin/aduan/:id` | Halaman penanganan detail aduan, pembaruan status, catatan admin, & kirim ulang WA. |
 
 ---
 
@@ -49,7 +49,7 @@ Aplikasi ini berjalan sebagai Single Page Application (SPA) dengan router terpus
 
 Untuk masuk ke Dashboard Admin, gunakan kredensial bawaan berikut setelah database berhasil di-seed:
 
-- **Alamat URL**: `http://localhost:8000/admin/login`
+- **Alamat URL**: `http://localhost:8000/auth/signin`
 - **Email**: `admin@pancenjateng.id`
 - **Password**: `password`
 
@@ -62,15 +62,23 @@ Untuk masuk ke Dashboard Admin, gunakan kredensial bawaan berikut setelah databa
 
 - **Backend**:
   - Framework: Laravel 12 (PHP 8.2+)
-  - Autentikasi: Laravel Sanctum (SPA Cookie-Based Guard)
+  - Autentikasi: Laravel Sanctum (Token-Based API Guard)
   - Notifikasi Gateway: Fonnte WhatsApp API Gateway
   - Database: SQLite (default untuk local dev / testing) atau PostgreSQL/MySQL
 - **Frontend**:
-  - Library: Vue 3 (Composition API)
-  - State Management: Pinia
-  - Routing: Vue Router
-  - Bundler: Vite 6
-  - Styles: Tailwind CSS v4, Radix/Reka UI, Shadcn Vue, Lucide Icons, Sonner Toast
+  - Library: React 19 (Functional Components + Hooks)
+  - State Management: React Context + TanStack Query
+  - Routing: React Router v7
+  - Bundler: Vite 7 + laravel-vite-plugin
+  - Styles: Tailwind CSS v4, Metronic demo1 Design System
+  - UI Components: Radix UI primitives (88 components), shadcn-style
+  - Forms: react-hook-form + zod validation
+  - Icons: Lucide React, Remix Icon
+  - Notifications: Sonner (toast)
+  - Theme: next-themes (dark/light mode)
+  - i18n: react-intl (id/en)
+  - Charts: ApexCharts, Recharts
+  - Maps: Leaflet + React Leaflet
 
 ---
 
@@ -79,7 +87,6 @@ Untuk masuk ke Dashboard Admin, gunakan kredensial bawaan berikut setelah databa
 - Composer >= 2.0
 - Node.js >= 20.x & npm
 - Akun Fonnte API (untuk notifikasi WhatsApp)
-- Google Maps API Key (untuk peta interaktif dan autocomplete)
 
 ---
 
@@ -98,7 +105,7 @@ Untuk masuk ke Dashboard Admin, gunakan kredensial bawaan berikut setelah databa
 
 3. **Instal dependensi Frontend (JS/Node)**:
    ```bash
-   npm install --legacy-peer-deps
+   npm install
    ```
 
 4. **Konfigurasi Environment**:
@@ -111,19 +118,16 @@ Untuk masuk ke Dashboard Admin, gunakan kredensial bawaan berikut setelah databa
    # WhatsApp Fonnte Gateway API
    FONNTE_TOKEN=your_fonnte_api_token
    FONNTE_TARGET=your_satpol_pp_group_or_number
-
-   # Google Maps JavaScript API
-   VITE_GOOGLE_MAP_KEY=your_google_maps_api_key
    ```
 
 5. **Jalankan Migrasi & Database Seeder**:
    Inisialisasi database lokal dan buat akun admin bawaan (`admin@pancenjateng.id` / `password`):
    ```bash
-   php artisan migrate:fresh --seed
+   php artisan migrate --seed
    ```
 
 6. **Build Asset Frontend**:
-   Kompilasi asset Vue dan Tailwind CSS untuk production:
+   Kompilasi asset React dan Tailwind CSS untuk production:
    ```bash
    npm run build
    ```
@@ -145,8 +149,9 @@ Aplikasi dilengkapi dengan rangkaian automated test lengkap yang meliputi penguj
 php artisan test
 ```
 
-### Type Checking Frontend
-Untuk memeriksa validitas kode TypeScript dan Vue SFC secara statis:
+### Type Checking & Lint Frontend
+Untuk memeriksa validitas kode TypeScript dan React secara statis:
 ```bash
-npx vue-tsc --noEmit
+npx tsc --noEmit
+npx eslint resources/js/
 ```

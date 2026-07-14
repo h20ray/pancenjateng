@@ -1,17 +1,37 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Pancen Jateng — Sistem Pengaduan Rokok Ilegal</title>
-    <!-- KeenIcons Style Sheets -->
-    <link rel="stylesheet" href="/vendors/outline/style.css">
-    <link rel="stylesheet" href="/vendors/filled/style.css">
-    <link rel="stylesheet" href="/vendors/solid/style.css">
-    <link rel="stylesheet" href="/vendors/duotone/style.css">
-    @vite(['resources/js/app.ts'])
-</head>
-<body class="min-h-screen bg-background font-sans antialiased">
-    <div id="app"></div>
-</body>
+<!doctype html>
+<html class="h-full" lang="id" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/media/app/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Pancen Jateng — Sistem Pengaduan Rokok Ilegal" />
+    <meta name="author" content="Pancen Jateng" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700"
+    />
+    <style>
+      .dark body {
+        background-color: hsl(240 10% 4%);
+      }
+    </style>
+    <script>
+      (function () {
+        try {
+          const theme = localStorage.getItem('theme') || 'system';
+          const prefersDark = window.matchMedia(
+            '(prefers-color-scheme: dark)',
+          ).matches;
+          const isDarkMode =
+            theme === 'dark' || (theme === 'system' && prefersDark);
+          if (isDarkMode) document.documentElement.classList.add('dark');
+        } catch (e) {}
+      })();
+    </script>
+    @viteReactRefresh
+    @vite(['resources/js/main.tsx'])
+  </head>
+  <body class="text-foreground bg-background flex h-full text-base antialiased">
+    <div class="flex grow" id="root"></div>
+  </body>
 </html>

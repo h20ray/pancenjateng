@@ -26,7 +26,7 @@ Before opening a PR, run every check and confirm zero failures.
 |---|---|---|
 | 1 | `vendor/bin/pint --test` | `pint: ok` — all files clean |
 | 2 | `php artisan test` | All passed, 0 failures |
-| 3 | `npx vue-tsc --noEmit` | Exit 0, no errors |
+| 3 | `npx tsc --noEmit` | Exit 0, no errors |
 | 4 | `npx eslint resources/js/` | Exit 0, no errors |
 
 **Strong requirement:** Do not run a subset. Do not dismiss failures as pre-existing unless the file is confirmed untouched by the PR.

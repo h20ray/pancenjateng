@@ -1,0 +1,22 @@
+{
+  "new": "Baru",
+  "in_progress": "Diproses",
+  "completed": "Selesai",
+  "rejected": "Ditolak",
+  "total": "Total",
+  "today": "Hari Ini",
+  "this_week": "Minggu Ini",
+  "this_month": "Bulan Ini",
+  "dark_mode": "Mode Gelap",
+  "language": "Bahasa",
+  "admin": "Admin",
+  "profile": "Profil",
+  "email": "Email",
+  "password": "Kata Sandi",
+  "name": "Nama",
+  "phone": "Telepon",
+  "date": "Tanggal",
+  "location": "Lokasi",
+  "photo": "Foto",
+  "status": "Status"
+}

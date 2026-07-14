@@ -1,17 +1,22 @@
 import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
-import pluginVue from 'eslint-plugin-vue';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
 import globals from 'globals';
 
 export default [
     js.configs.recommended,
     ...tseslint.configs.recommended,
-    ...pluginVue.configs['flat/recommended'],
     {
-        files: ['resources/js/**/*.ts', 'resources/js/**/*.vue'],
+        files: ['resources/js/**/*.{ts,tsx}'],
+        plugins: {
+            'react-hooks': reactHooks,
+            'react-refresh': reactRefresh,
+        },
         languageOptions: {
+            parser: tseslint.parser,
             parserOptions: {
-                parser: tseslint.parser,
+                ecmaFeatures: { jsx: true },
             },
             globals: {
                 ...globals.browser,
@@ -19,20 +24,10 @@ export default [
             },
         },
         rules: {
-            'vue/multi-word-component-names': 'off',
+            ...reactHooks.configs.recommended.rules,
+            'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
             '@typescript-eslint/no-explicit-any': 'off',
-            // Relax formatting rules for shadcn-vue component conventions
-            'vue/html-indent': 'off',
-            'vue/max-attributes-per-line': 'off',
-            'vue/singleline-html-element-content-newline': 'off',
-            'vue/html-self-closing': 'off',
-            'vue/require-default-prop': 'off',
-        },
-    },
-    {
-        files: ['resources/js/**/*.js'],
-        languageOptions: {
-            globals: globals.browser,
+            '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
         },
     },
     {
@@ -42,6 +37,7 @@ export default [
             'public/',
             'storage/',
             'resources/js/bootstrap.js',
+            'resources/js/build/',
         ],
     },
 ];
